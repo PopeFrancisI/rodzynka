@@ -1,10 +1,20 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Rodzynka</title>
 </head>
-<body>
 
+
+<body>
+    <div class="header">
+        <b>Rodzynka</b>
+        <a href="{% url 'main_page' %}">Family</a>
+    </div>
+
+    {% block content %}
+    {% endblock %}
 </body>
+
 </html>
