@@ -38,6 +38,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'users',
+    'family',
+    'gallery',
 ]
 
 MIDDLEWARE = [
@@ -115,3 +117,6 @@ except ModuleNotFoundError:
     print("The database not configured in local_settings.py!")
     print("Configure the database and try again.")
     exit(0)
+
+LOGIN_REDIRECT_URL = 'family_pick'
+LOGOUT_REDIRECT_URL = 'landing_page'

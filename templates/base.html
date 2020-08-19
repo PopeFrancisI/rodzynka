@@ -8,15 +8,19 @@
 
 
 <body>
-
     <div class="header">
         <b>Rodzynka</b>
-        <a href="{% url 'family_main' %}">Family</a>
+
+        {% for family in user_families %}
+            <a href="{% url 'family_main' slug=family.slug %}">{{ family.name }} ({{ family.last_name }})</a>
+        {% endfor %}
+
+        <a href="{% url 'logout' %}">Log out</a>
     </div>
 
     {% block content %}
-    {% endblock %}
 
+    {% endblock %}
 </body>
 
 </html>
