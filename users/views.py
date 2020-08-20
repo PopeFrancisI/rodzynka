@@ -6,14 +6,17 @@ from django.views import View
 
 
 # Create your views here.
+from users.forms import ExtendedUserCreationForm
+
+
 class SignupView(View):
 
     def get(self, request):
-        form = UserCreationForm()
-        return render(request, 'registration.html', {'form': form})
+        form = ExtendedUserCreationForm()
+        return render(request, 'registration/registration.html', {'form': form})
 
     def post(self, request):
-        form = UserCreationForm(request.POST)
+        form = ExtendedUserCreationForm(request.POST)
         if form.is_valid():
             form.save()
             username = form.cleaned_data.get('username')
@@ -22,4 +25,4 @@ class SignupView(View):
             if user is not None and user.is_active:
                 login(request, user)
                 return redirect(reverse('family_pick'))
-        return render(request, 'registration.html', {'form': form})
+        return render(request, 'registration/registration.html', {'form': form})
