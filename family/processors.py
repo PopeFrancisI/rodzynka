@@ -4,9 +4,8 @@ from family.models import Family
 
 
 def header_data(request):
-    print(request.user)
+    context = {}
     if not request.user.is_anonymous:
         user_families = Family.objects.filter(user=request.user)
-        context = {'user_families': user_families}
-        return context
-    return {}
+        context['user_families'] = user_families
+    return context
