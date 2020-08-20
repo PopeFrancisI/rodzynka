@@ -2,7 +2,7 @@
 {% block content %}
 
     {% for family in user_families %}
-        <a href="{% url 'family_main' slug=family.slug %}">{{ family.name }} ({{ family.last_name }})</a>
+        <a href="{% url 'family_main' family_slug=family.slug %}">{{ family.name }} ({{ family.last_name }})</a>
     {% empty %}
         <div>You don't belong to any family!</div>
     {% endfor %}
