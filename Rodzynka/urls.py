@@ -17,11 +17,13 @@ from django.contrib import admin
 from django.contrib.auth.views import LoginView, LogoutView
 from django.urls import path, re_path
 from family.views import FamilyMainView, FamilyPickView
+from users.views import SignupView
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     re_path(r'^login/$', LoginView.as_view(), name='login'),
     re_path(r'^logout/$', LogoutView.as_view(), name='logout'),
+    re_path(r'^signup/$', SignupView.as_view(), name='signup'),
     re_path(r'^family/(?P<slug>[a-z\d-]+)/main/$', FamilyMainView.as_view(), name='family_main'),
     re_path(r'^family/pick/$', FamilyPickView.as_view(), name='family_pick'),
 ]
