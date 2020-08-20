@@ -6,21 +6,14 @@
     <title>Rodzynka</title>
 </head>
 
-
 <body>
-    <div class="header">
-        <b>Rodzynka</b>
-
-        {% for family in user_families %}
-            <a href="{% url 'family_main' slug=family.slug %}">{{ family.name }} ({{ family.last_name }})</a>
-        {% endfor %}
-
-        <a href="{% url 'logout' %}">Log out</a>
-    </div>
-
     {% block content %}
-
     {% endblock %}
+
+    <footer class="footer">
+        <hr>
+        footer data
+    </footer>
 </body>
 
 </html>

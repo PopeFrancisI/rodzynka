@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+    <h1 align="center">Rodzynka</h1>
+    <hr>
+
+    <form action="{% url 'signup' %}">
+        <button type="submit">Join</button>
+    </form>
+    <form action="{% url 'family_pick' %}">
+        <button type="submit">Log in</button>
+    </form>
+
+{% endblock %}

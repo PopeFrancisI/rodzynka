@@ -26,3 +26,9 @@ class FamilyPickView(LoginRequiredMixin, View):
             return redirect(reverse('family_main', args=(user_families.first().slug, )))
 
         return render(request, 'family_pick.html')
+
+
+class IndexView(View):
+
+    def get(self, request):
+        return render(request, 'index.html')

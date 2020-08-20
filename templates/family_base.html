@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <div class="header">
+        <b>Rodzynka</b>
+
+        {% for family in user_families %}
+            <a href="{% url 'family_main' slug=family.slug %}">{{ family.name }} ({{ family.last_name }})</a>
+        {% endfor %}
+
+        <a href="{% url 'logout' %}">Log out</a>
+    </div>
+
+    {% block family_content %}
+
+    {% endblock %}
+
+{% endblock %}
