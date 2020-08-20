@@ -121,4 +121,4 @@ except ModuleNotFoundError:
 
 LOGIN_REDIRECT_URL = 'family_pick'
 LOGIN_URL = 'login'
-LOGOUT_REDIRECT_URL = 'landing_page'
+LOGOUT_REDIRECT_URL = 'index'
