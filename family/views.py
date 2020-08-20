@@ -9,10 +9,11 @@ from family.models import Family
 # Create your views here.
 class FamilyMainView(LoginRequiredMixin, View):
 
-    def get(self, request, slug):
-        family = Family.objects.get(slug=slug)
+    def get(self, request, family_slug):
+        family = Family.objects.get(slug=family_slug)
 
         context = {'user_family': family}
+        request.session['active_family'] = family.id
 
         return render(request, 'family_main.html', context)
 

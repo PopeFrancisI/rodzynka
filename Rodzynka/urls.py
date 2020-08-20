@@ -17,6 +17,7 @@ from django.contrib import admin
 from django.contrib.auth.views import LoginView, LogoutView
 from django.urls import path, re_path
 from family.views import FamilyMainView, FamilyPickView, IndexView
+from gallery.views import GalleryPickView
 from users.views import SignupView
 
 urlpatterns = [
@@ -25,6 +26,7 @@ urlpatterns = [
     re_path(r'^logout/$', LogoutView.as_view(), name='logout'),
     re_path(r'^signup/$', SignupView.as_view(), name='signup'),
     re_path(r'^$', IndexView.as_view(), name='index'),
-    re_path(r'^family/(?P<slug>[a-z\d-]+)/main/$', FamilyMainView.as_view(), name='family_main'),
     re_path(r'^family/pick/$', FamilyPickView.as_view(), name='family_pick'),
+    re_path(r'^family/(?P<family_slug>[a-z\d-]+)/main/$', FamilyMainView.as_view(), name='family_main'),
+    re_path(r'^family/(?P<family_slug>[a-z\d-]+)/gallery/pick/$', GalleryPickView.as_view(), name='gallery_pick'),
 ]
