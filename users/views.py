@@ -4,7 +4,7 @@ from django.views import View
 
 
 # Create your views here.
-class RegistrationView(View):
+class SignupView(View):
 
     def post(self, request):
         form = UserCreationForm()
