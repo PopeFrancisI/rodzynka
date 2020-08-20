@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'users',
     'family',
     'gallery',
+    'landing_page',
 ]
 
 MIDDLEWARE = [
