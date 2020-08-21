@@ -8,16 +8,21 @@ from django.views.generic import CreateView, FormView
 
 from family.forms import FamilyCreateForm
 from family.models import Family
-
-
-# Create your views here.
 from family.utils import slugify
 
 
-class FamilyMainView(LoginRequiredMixin, View):
+class GetUserFamilyMixin:
+    def get_family(self, user, slug):
+        family = user.family_set.all()
+        family = family.get(slug=slug)
+        return family
+
+
+class FamilyMainView(LoginRequiredMixin, GetUserFamilyMixin, View):
 
     def get(self, request, family_slug):
-        family = Family.objects.get(slug=family_slug)
+        family = self.get_family(request.user, family_slug)
+        # family = Family.objects.get(slug=family_slug, user__in=[request.user])
 
         context = {'user_family': family}
         request.session['current_family_slug'] = family.slug
