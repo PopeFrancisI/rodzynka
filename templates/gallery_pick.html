@@ -5,8 +5,13 @@
     <h2>{{ family.name }} family galleries</h2>
 
     {% for gallery, media in galleries %}
-        <img src="{{ media.image.url }}" alt="{{ gallery.name }}" width="200" height="200"/>
-        gallery.name
+        {% load static %}
+        {% if not media.image.url %}
+            <img src="{% static 'default_covers/default_cover.jpg' %}" alt="gallery cover" width="200px" height="200px">
+        {% else %}
+            <img src="{{ media.image.url }}" alt="{{ gallery.name }}" width="200px" height="200px"/>
+        {% endif %}
+        <a href="{% url 'gallery_detail' family_slug=family.slug pk=gallery.id %}">{{ gallery.name }}</a>
     {% endfor%}
 
 {% endblock %}

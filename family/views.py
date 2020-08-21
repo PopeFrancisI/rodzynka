@@ -18,11 +18,21 @@ class GetUserFamilyMixin:
         return family
 
 
+def get_newest_media(family):
+    last_updated_gallery = family.gallery_set.all().order_by('last_media_upload_date').first()
+    last_updated_gallery: Gallery
+    newest_media = last_updated_gallery.media_set.latest('upload_date')
+    return newest_media, last_updated_gallery
+
+
 class FamilyMainView(LoginRequiredMixin, GetUserFamilyMixin, View):
 
     def get(self, request, family_slug):
         family = self.get_family(request.user, family_slug)
-        context = {'user_family': family}
+        newest_media_results = get_newest_media(family)
+        newest_media = newest_media_results[0]
+        newest_media_gallery = newest_media_results[1]
+        context = {'user_family': family, 'newest_media': newest_media, 'newest_media_gallery': newest_media_gallery}
         request.session['current_family_slug'] = family.slug
 
         return render(request, 'family_main.html', context)

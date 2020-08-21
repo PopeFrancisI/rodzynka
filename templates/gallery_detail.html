@@ -3,7 +3,7 @@
 {% block family_content %}
 
     {% for media in page_obj %}
-        <img src="{{ media.image.url }}" alt="{{ media.title }}">
+        <img src="{{ media.image.url }}" alt="{{ media.title }}" height="400px" width="400px">
     {% endfor %}
 
 {% endblock %}
