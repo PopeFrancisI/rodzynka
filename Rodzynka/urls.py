@@ -19,7 +19,7 @@ from django.contrib.auth.views import LoginView, LogoutView
 from django.urls import path, re_path
 
 from Rodzynka import settings
-from family.views import FamilyMainView, FamilyPickView, IndexView
+from family.views import FamilyMainView, FamilyPickView, IndexView, FamilyCreateView
 from gallery.views import GalleryPickView
 from users.views import SignupView
 
@@ -30,6 +30,7 @@ urlpatterns = [
     re_path(r'^signup/$', SignupView.as_view(), name='signup'),
     re_path(r'^$', IndexView.as_view(), name='index'),
     re_path(r'^family/pick/$', FamilyPickView.as_view(), name='family_pick'),
+    re_path(r'^family/create/$', FamilyCreateView.as_view(), name='family_create'),
     re_path(r'^family/(?P<family_slug>[a-z\d-]+)/main/$', FamilyMainView.as_view(), name='family_main'),
     re_path(r'^family/(?P<family_slug>[a-z\d-]+)/gallery/pick/$', GalleryPickView.as_view(), name='gallery_pick'),
 ]

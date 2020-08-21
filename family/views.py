@@ -1,12 +1,19 @@
 from django.contrib.auth.models import User
+from django.forms import Form
 from django.shortcuts import render, redirect
-from django.urls import reverse
+from django.urls import reverse, reverse_lazy
 from django.views import View
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.views.generic import CreateView, FormView
+
+from family.forms import FamilyCreateForm
 from family.models import Family
 
 
 # Create your views here.
+from family.utils import slugify
+
+
 class FamilyMainView(LoginRequiredMixin, View):
 
     def get(self, request, family_slug):
@@ -33,3 +40,21 @@ class IndexView(View):
 
     def get(self, request):
         return render(request, 'index.html')
+
+
+class FamilyCreateView(FormView):
+    form_class = FamilyCreateForm
+    template_name = 'family_create.html'
+    success_url = reverse_lazy('family_pick')
+
+    def form_valid(self, form):
+        form: Form
+        name = form.cleaned_data.get('name')
+        last_name = form.cleaned_data.get('last_name')
+        slug = slugify(name)
+        user = self.request.user
+        family = Family.objects.create(name=name,
+                                       last_name=last_name,
+                                       slug=slug)
+        family.user.add(user)
+        return super().form_valid(form)

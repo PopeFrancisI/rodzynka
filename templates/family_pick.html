@@ -3,8 +3,11 @@
 
     {% for family in user_families %}
         <a href="{% url 'family_main' family_slug=family.slug %}">{{ family.name }} ({{ family.last_name }})</a>
+        <br>
     {% empty %}
-        <div>You don't belong to any family!</div>
+        <div>You don't belong to any family! You can create a new family or join existing family below:</div>
     {% endfor %}
+
+    <a href="{% url 'family_create' %}">+ Create a new family</a>
 
 {% endblock %}
