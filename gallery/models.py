@@ -13,7 +13,7 @@ class Gallery(models.Model):
 
 class Media(models.Model):
     title = models.CharField(max_length=64)
-    upload_date = models.DateTimeField()
+    upload_date = models.DateTimeField(auto_now_add=True)
     uploader = models.ForeignKey(User, on_delete=models.CASCADE)
     image = models.ImageField(upload_to='user_images/')
     galleries = models.ManyToManyField(Gallery)
@@ -27,7 +27,7 @@ class Media(models.Model):
                 gallery.last_image_upload_date = self.upload_date
 
         super(Media, self).save(self, force_insert=False, force_update=False, using=None,
-             update_fields=None)
+                                update_fields=None)
 
 
 def create_gallery(name, family):
