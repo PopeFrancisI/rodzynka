@@ -13,7 +13,8 @@
     </div>
 
     <div>
-        Newest picture
+        {{ newest_image }}
+        <a href="{% url 'gallery_detail' family_slug=user_family.slug pk=newest_image_gallery_id %}"></a>
     </div>
 
 {%  endblock %}
