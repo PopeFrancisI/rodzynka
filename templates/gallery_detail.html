@@ -1,0 +1,9 @@
+{% extends 'family_main.html' %}
+
+{% block family_content %}
+
+    {% for media in page_obj %}
+        <img src="{{ media.image.url }}" alt="{{ media.title }}">
+    {% endfor %}
+
+{% endblock %}
