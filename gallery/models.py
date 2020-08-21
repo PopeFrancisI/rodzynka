@@ -8,6 +8,7 @@ class Gallery(models.Model):
     name = models.CharField(max_length=64)
     create_date = models.DateTimeField()
     family = models.ForeignKey(Family, on_delete=models.CASCADE)
+    cover = models.ImageField()
 
 
 class Media(models.Model):
