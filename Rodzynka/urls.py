@@ -33,6 +33,8 @@ urlpatterns = [
     re_path(r'^family/create/$', FamilyCreateView.as_view(), name='family_create'),
     re_path(r'^family/(?P<family_slug>[a-z\d-]+)/main/$', FamilyMainView.as_view(), name='family_main'),
     re_path(r'^family/(?P<family_slug>[a-z\d-]+)/gallery/pick/$', GalleryPickView.as_view(), name='gallery_pick'),
+    re_path(r'^family/(?P<family_slug>[a-z\d-]+)/gallery/(?P<pk>[\d]+)/$',
+            GalleryDetailView.as_view(), name='gallery_detail'),
 ]
 
 if settings.DEBUG:
