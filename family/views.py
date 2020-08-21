@@ -5,11 +5,10 @@ from django.urls import reverse, reverse_lazy
 from django.views import View
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic import CreateView, FormView
-
 from family.forms import FamilyCreateForm
 from family.models import Family
 from family.utils import slugify
-from gallery.models import Gallery
+from gallery.models import Gallery, create_gallery
 
 
 class GetUserFamilyMixin:
@@ -60,4 +59,10 @@ class FamilyCreateView(FormView):
                                        last_name=last_name,
                                        slug=slug)
         family.user.add(user)
+
+        create_gallery(f'Main gallery', family)
+
+        # create wishlist
+        # create calendar
+
         return super().form_valid(form)
