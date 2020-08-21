@@ -20,7 +20,7 @@ from django.urls import path, re_path
 
 from Rodzynka import settings
 from family.views import FamilyMainView, FamilyPickView, IndexView, FamilyCreateView
-from gallery.views import GalleryPickView
+from gallery.views import GalleryPickView, GalleryDetailView
 from users.views import SignupView
 
 urlpatterns = [
