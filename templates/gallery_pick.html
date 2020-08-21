@@ -5,7 +5,7 @@
     <h2>{{ family.name }} family galleries</h2>
 
     {% for gallery, media in galleries %}
-        <img src="{{ media.image.url }}" alt="{{ gallery.name }}"/>
+        <img src="{{ media.image.url }}" alt="{{ gallery.name }}" width="200" height="200"/>
         gallery.name
     {% endfor%}
 
