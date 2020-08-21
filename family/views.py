@@ -13,6 +13,7 @@ class FamilyMainView(LoginRequiredMixin, View):
         family = Family.objects.get(slug=family_slug)
 
         context = {'user_family': family}
+        request.session['current_family_slug'] = family.slug
 
         return render(request, 'family_main.html', context)
 

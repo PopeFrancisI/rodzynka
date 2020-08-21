@@ -8,6 +8,8 @@
             <a href="{% url 'family_main' family_slug=family.slug %}">{{ family.name }} ({{ family.last_name }})</a>
         {% endfor %}
 
+        <a href="{% url 'gallery_pick' family_slug=current_family.slug %}">Gallery</a>
+
         <a href="{% url 'logout' %}">Log out</a>
     </div>
 
