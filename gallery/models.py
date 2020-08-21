@@ -14,20 +14,9 @@ class Gallery(models.Model):
 class Media(models.Model):
     title = models.CharField(max_length=64)
     upload_date = models.DateTimeField(auto_now_add=True)
-    uploader = models.ForeignKey(User, on_delete=models.CASCADE)
+    uploader = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
     image = models.ImageField(upload_to='user_images/')
-    galleries = models.ManyToManyField(Gallery)
-
-    def save(self, force_insert=False, force_update=False, using=None,
-             update_fields=None):
-
-        if self.galleries:
-            galleries = self.galleries.all()
-            for gallery in galleries:
-                gallery.last_image_upload_date = self.upload_date
-
-        super(Media, self).save(self, force_insert=False, force_update=False, using=None,
-                                update_fields=None)
+    galleries = models.ManyToManyField(Gallery, null=True)
 
 
 def create_gallery(name, family):

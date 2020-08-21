@@ -69,6 +69,7 @@ class FamilyCreateView(FormView):
                                        last_name=last_name,
                                        slug=slug)
         family.user.add(user)
+        family.save()
 
         create_gallery(f'Main gallery', family)
 
