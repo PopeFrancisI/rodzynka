@@ -53,7 +53,6 @@ class FamilyCreateView(FormView):
     success_url = reverse_lazy('family_pick')
 
     def form_valid(self, form):
-        form: Form
         name = form.cleaned_data.get('name')
         last_name = form.cleaned_data.get('last_name')
         slug = slugify(name)
