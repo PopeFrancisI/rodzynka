@@ -10,6 +10,9 @@ class Gallery(models.Model):
     last_media_upload_date = models.DateTimeField(null=True, default=None)
     family = models.ForeignKey(Family, on_delete=models.CASCADE)
 
+    def __str__(self):
+        return f'{self.name} gallery'
+
 
 class Media(models.Model):
     title = models.CharField(max_length=64)
@@ -17,6 +20,9 @@ class Media(models.Model):
     uploader = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
     image = models.ImageField(upload_to='user_images/')
     galleries = models.ManyToManyField(Gallery, null=True)
+
+    def __str__(self):
+        return f'Media: {self.title}, upload_date: {self.upload_date}, image: {self.image.name}'
 
 
 def create_gallery(name, family):

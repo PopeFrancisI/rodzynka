@@ -23,7 +23,9 @@ class GalleryPickView(LoginRequiredMixin, GetUserFamilyMixin, View):
         galleries = family.gallery_set.all()
         galleries_with_covers = []
         for gallery in galleries:
-            galleries_with_covers.append((gallery, gallery.media_set.first()))
+            gallery_obj = gallery
+            gallery_cover = gallery.media_set.latest('upload_date') if gallery.media_set.first() else None
+            galleries_with_covers.append((gallery_obj, gallery_cover))
         context = {'family': family, 'galleries': galleries_with_covers}
 
         return render(request, 'gallery_pick.html', context)
