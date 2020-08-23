@@ -63,7 +63,7 @@ class WishCreateView(LoginRequiredMixin, CreateView):
                                 family=family,
                                 user=user)
         except Exception:
-            print(Exception)
+            pass
 
         return redirect(self.get_success_url())
 
