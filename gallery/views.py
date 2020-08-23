@@ -3,7 +3,7 @@ from django.core.paginator import Paginator
 from django.shortcuts import render, redirect
 from django.urls import reverse_lazy, reverse
 from django.views import View
-from django.views.generic import FormView, DeleteView
+from django.views.generic import FormView, DeleteView, CreateView
 from gallery.forms import GalleryMediaCreateForm
 from gallery.models import Gallery, Media
 from family.views import GetUserFamilyMixin
@@ -29,6 +29,42 @@ class GalleryPickView(LoginRequiredMixin, GetUserFamilyMixin, View):
         context = {'family': family, 'galleries': galleries_with_covers}
 
         return render(request, 'gallery_pick.html', context)
+
+
+class GalleryCreateView(LoginRequiredMixin, CreateView):
+    model = Gallery
+    fields = []
+
+
+class GalleryDeleteView(LoginRequiredMixin, DeleteView):
+    model = Gallery
+    template_name = 'gallery_delete_view.html'
+    pk_url_kwarg = 'gallery_pk'
+
+    def get_success_url(self):
+        """
+        get_succes_url override that redirects to gallery_pick page
+        :return:
+        """
+        return reverse_lazy('gallery_pick', args=(self.kwargs['family_slug'], ))
+
+    def delete(self, request, *args, **kwargs):
+        """
+        Deletes gallery and its all images unless it's a main gallery
+        :param request:
+        :param args:
+        :param kwargs:
+        :return:
+        """
+        gallery = self.get_object()
+
+        if gallery.is_main:
+            return redirect(self.get_success_url())
+        else:
+            gallery_medias = self.get_object().objects.media_set.all()
+            for media in gallery_medias:
+                media.delete()
+            return super().delete(request, *args, **kwargs)
 
 
 class GalleryDetailView(LoginRequiredMixin, GetUserFamilyMixin, View):

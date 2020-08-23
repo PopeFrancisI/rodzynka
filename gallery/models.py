@@ -31,8 +31,9 @@ class Media(models.Model):
 
 
 def create_gallery(name, family, is_main):
-    Gallery.objects.create(
+    gallery = Gallery.objects.create(
         name=name,
         family=family,
         is_main=is_main
     )
+    return gallery
