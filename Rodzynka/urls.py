@@ -23,7 +23,7 @@ from family.views import FamilyMainView, FamilyPickView, IndexView, FamilyCreate
 from gallery.views import GalleryPickView, GalleryDetailView, GalleryMediaCreateView, GalleryMediaDeleteView, \
     GalleryDeleteView, GalleryCreateView
 from users.views import SignupView
-from wishlist.views import WishlistView
+from wishlist.views import WishlistView, WishCreateView
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -49,7 +49,8 @@ urlpatterns = [
     re_path(r'^family/(?P<family_slug>[a-z\d-]+)/gallery/(?P<gallery_pk>[\d]+)/delete/(?P<media_pk>[\d]+)/$',
             GalleryMediaDeleteView.as_view(), name='gallery_media_delete'),
 
-    re_path(r'^family/(?P<family_slug>[a-z\d-]+)/wishlist/$', WishlistView.as_view(), name='wishlist')
+    re_path(r'^family/(?P<family_slug>[a-z\d-]+)/wishlist/$', WishlistView.as_view(), name='wishlist'),
+    re_path(r'^family/(?P<family_slug>[a-z\d-]+)/wishlist/add$', WishCreateView.as_view(), name='wish_create'),
 ]
 
 if settings.DEBUG:
