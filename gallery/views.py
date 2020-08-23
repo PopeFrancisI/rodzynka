@@ -66,7 +66,6 @@ class GalleryMediaCreateView(LoginRequiredMixin, FormView):
         image = form.save()
         image.uploader = self.request.user
 
-        print('image title: ' + image.title)
         if not image.title:
             image.title = image.image.name
 

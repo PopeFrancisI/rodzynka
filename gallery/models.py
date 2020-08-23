@@ -12,7 +12,7 @@ class Gallery(models.Model):
     family = models.ForeignKey(Family, on_delete=models.CASCADE)
 
     def __str__(self):
-        return f'{self.name} gallery'
+        return f'{self.name}'
 
 
 class Media(models.Model):
@@ -27,7 +27,7 @@ class Media(models.Model):
         return super().delete(keep_parents=False)
 
     def __str__(self):
-        return f'Media: {self.title}, upload_date: {self.upload_date}, image: {self.image.name}'
+        return f'{self.title} (upload_date: {self.upload_date})'
 
 
 def create_gallery(name, family, is_main):
