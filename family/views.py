@@ -20,7 +20,10 @@ class GetUserFamilyMixin:
 
 def get_newest_media(family):
     last_updated_gallery = family.gallery_set.all().order_by('last_media_upload_date').first()
-    newest_media = last_updated_gallery.media_set.latest('upload_date')
+    try:
+        newest_media = last_updated_gallery.media_set.latest('upload_date')
+    except Exception:
+        newest_media = None
     return newest_media, last_updated_gallery
 
 
