@@ -20,7 +20,8 @@ from django.urls import path, re_path
 
 from Rodzynka import settings
 from family.views import FamilyMainView, FamilyPickView, IndexView, FamilyCreateView
-from gallery.views import GalleryPickView, GalleryDetailView, GalleryMediaCreateView, GalleryMediaDeleteView
+from gallery.views import GalleryPickView, GalleryDetailView, GalleryMediaCreateView, GalleryMediaDeleteView, \
+    GalleryDeleteView, GalleryCreateView
 from users.views import SignupView
 
 urlpatterns = [
@@ -38,6 +39,10 @@ urlpatterns = [
     re_path(r'^family/(?P<family_slug>[a-z\d-]+)/gallery/pick/$', GalleryPickView.as_view(), name='gallery_pick'),
     re_path(r'^family/(?P<family_slug>[a-z\d-]+)/gallery/(?P<gallery_pk>[\d]+)/$',
             GalleryDetailView.as_view(), name='gallery_detail'),
+    re_path(r'^family/(?P<family_slug>[a-z\d-]+)/gallery/add/$', GalleryCreateView.as_view(), name='gallery_create'),
+    re_path(r'^family/(?P<family_slug>[a-z\d-]+)/gallery/delete/(?P<gallery_pk>[\d]+)/$',
+            GalleryDeleteView.as_view(), name='gallery_delete'),
+
     re_path(r'^family/(?P<family_slug>[a-z\d-]+)/gallery/(?P<gallery_pk>[\d]+)/add/$',
             GalleryMediaCreateView.as_view(), name='gallery_media_add'),
     re_path(r'^family/(?P<family_slug>[a-z\d-]+)/gallery/(?P<gallery_pk>[\d]+)/delete/(?P<media_pk>[\d]+)/$',

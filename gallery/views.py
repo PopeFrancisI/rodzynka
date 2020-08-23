@@ -1,11 +1,14 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.paginator import Paginator
+from django.forms import Form
 from django.shortcuts import render, redirect
 from django.urls import reverse_lazy, reverse
 from django.views import View
 from django.views.generic import FormView, DeleteView, CreateView
+
+from family.models import Family
 from gallery.forms import GalleryMediaCreateForm
-from gallery.models import Gallery, Media
+from gallery.models import Gallery, Media, create_gallery
 from family.views import GetUserFamilyMixin
 
 
@@ -33,7 +36,18 @@ class GalleryPickView(LoginRequiredMixin, GetUserFamilyMixin, View):
 
 class GalleryCreateView(LoginRequiredMixin, CreateView):
     model = Gallery
-    fields = []
+    fields = ['name']
+    template_name = 'gallery_create.html'
+
+    def get_success_url(self):
+        return reverse_lazy('gallery_pick', args=(self.kwargs['family_slug'], ))
+
+    def form_valid(self, form):
+        form: Form
+        name = form.cleaned_data.get('name')
+        family = Family.objects.get(slug=self.kwargs['family_slug'])
+        create_gallery(name, family, False)
+        return redirect(self.get_success_url())
 
 
 class GalleryDeleteView(LoginRequiredMixin, DeleteView):
