@@ -13,6 +13,12 @@ from family.views import GetUserFamilyMixin
 class GalleryPickView(LoginRequiredMixin, GetUserFamilyMixin, View):
 
     def get(self, request, family_slug):
+        """
+        get all family's galleries and render the family gallery page
+        :param request:
+        :param family_slug:
+        :return:
+        """
         family = self.get_family(request.user, family_slug)
         galleries = family.gallery_set.all()
         galleries_with_covers = []
@@ -26,6 +32,13 @@ class GalleryPickView(LoginRequiredMixin, GetUserFamilyMixin, View):
 class GalleryDetailView(LoginRequiredMixin, GetUserFamilyMixin, View):
 
     def get(self, request, gallery_pk, family_slug):
+        """
+        get gallery data and render a this gallery's page
+        :param request:
+        :param gallery_pk:
+        :param family_slug:
+        :return:
+        """
         family = self.get_family(request.user, family_slug)
         gallery = Gallery.objects.get(pk=gallery_pk, family=family)
         medias = gallery.media_set.all().order_by('-upload_date')
@@ -43,8 +56,12 @@ class GalleryMediaCreateView(LoginRequiredMixin, FormView):
     template_name = 'gallery_media_add.html'
 
     def form_valid(self, form):
+        """
+        create media and attach it to a gallery and set gallery's last update date to medias creation date
+        :param form:
+        :return:
+        """
         image = form.save()
-        image: Media
         image.uploader = self.request.user
 
         if not image.title:
