@@ -73,7 +73,7 @@ class FamilyCreateView(FormView):
         family.user.add(user)
         family.save()
 
-        create_gallery(f'Main gallery', family)
+        create_gallery(f'Main gallery', family, True)
 
         # create wishlist
         # create calendar
