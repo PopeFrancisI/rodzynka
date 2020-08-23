@@ -20,6 +20,9 @@
                             <b>!!!</b>
                         {% endif %}
                         <b>{{ wish.title }}</b>
+                        {% if current_user == user %}
+                            <a href="{% url 'wish_delete' family_slug=family.slug wish_pk=wish.id %}">- Remove this wish</a>
+                        {% endif %}
                         <p>{{ wish.description }}</p>
                     </li>
                 {% endfor %}

@@ -6,7 +6,7 @@ from django.forms import Form
 from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
 from django.views import View
-from django.views.generic import CreateView
+from django.views.generic import CreateView, DeleteView
 
 from family.models import Family
 from family.views import GetUserFamilyMixin
@@ -22,17 +22,15 @@ class WishlistView(LoginRequiredMixin, GetUserFamilyMixin, View):
         try:
             wishlist = defaultdict(list)
             for wish in family.wish_set.all():
-                print(wish.title)
                 wishlist[f'{wish.user.username} ({wish.user.first_name} {wish.user.last_name})'].append(wish)
 
             wishlist = list(wishlist.items())
-            print(wishlist)
             context['wishlist'] = wishlist
         except Exception:
             context['wishlist'] = None
 
         context['family'] = family
-
+        context['current_user'] = f'{request.user.username} ({request.user.first_name} {request.user.last_name})'
         return render(request, 'wishlist.html', context)
 
 
@@ -67,3 +65,18 @@ class WishCreateView(LoginRequiredMixin, CreateView):
 
         return redirect(self.get_success_url())
 
+
+class WishDeleteView(LoginRequiredMixin, DeleteView):
+    model = Wish
+    template_name = 'wish_delete.html'
+    pk_url_kwarg = 'wish_pk'
+
+    def get_success_url(self):
+        return reverse_lazy('wishlist', args=(self.kwargs['family_slug'], ))
+
+    def delete(self, request, *args, **kwargs):
+        wish = self.get_object()
+        if wish.user != request.user:
+            return redirect(self.get_success_url())
+        else:
+            return super(WishDeleteView, self).delete(request, *args, **kwargs)

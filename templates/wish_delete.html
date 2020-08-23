@@ -1,0 +1,11 @@
+{% extends 'family_base.html' %}
+
+{% block family_content %}
+
+    <form method="post">
+    {% csrf_token %}
+    <p>Are you sure you want to delete this wish: "{{ object }}"?</p>
+    <input type="submit" value="confirm">
+    </form>
+
+{% endblock %}
