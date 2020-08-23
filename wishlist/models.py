@@ -1,3 +1,12 @@
+from django.contrib.auth.models import User
 from django.db import models
 
-# Create your models here.
+from family.models import Family
+
+
+class Wish(models.Model):
+    title = models.CharField(max_length=64)
+    description = models.TextField()
+    is_important = models.BooleanField(default=False)
+    family = models.ForeignKey(Family, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
