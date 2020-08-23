@@ -43,10 +43,15 @@ class GalleryCreateView(LoginRequiredMixin, CreateView):
         return reverse_lazy('gallery_pick', args=(self.kwargs['family_slug'], ))
 
     def form_valid(self, form):
-        form: Form
+        """
+        creates a new non-main gallery
+        :param form:
+        :return:
+        """
         name = form.cleaned_data.get('name')
         family = Family.objects.get(slug=self.kwargs['family_slug'])
         create_gallery(name, family, False)
+
         return redirect(self.get_success_url())
 
 
@@ -75,7 +80,7 @@ class GalleryDeleteView(LoginRequiredMixin, DeleteView):
         if gallery.is_main:
             return redirect(self.get_success_url())
         else:
-            gallery_medias = self.get_object().objects.media_set.all()
+            gallery_medias = self.get_object().media_set.all()
             for media in gallery_medias:
                 media.delete()
             return super().delete(request, *args, **kwargs)
