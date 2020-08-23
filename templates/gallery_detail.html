@@ -2,12 +2,13 @@
 
 {% block family_content %}
 
-    <form action="{% url 'gallery_media_add' family_slug=family.slug pk=gallery.id%}">
+    <form action="{% url 'gallery_media_add' family_slug=family.slug gallery_pk=gallery.id%}">
         <input type="submit" value="Add new image">
     </form>
 
     {% for media in page_obj %}
         <img src="{{ media.image.url }}" alt="{{ media.title }}" height="400px" width="400px">
+        <a href="{% url 'gallery_media_delete' family_slug=family.slug gallery_pk=gallery.pk media_pk=media.pk %}">[x]</a>
     {% endfor %}
 
     <div class="pagination" align="center">

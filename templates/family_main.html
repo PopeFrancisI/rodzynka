@@ -15,7 +15,7 @@
     <div class="latest-image">
         <h3>Newest image from the Gallery</h3>
         <img src="{{ newest_media.image.url }}" alt="Newest media/image from family gallery">
-        <a href="{% url 'gallery_detail' family_slug=user_family.slug pk=newest_media_gallery.id %}">Go to gallery</a>
+        <a href="{% url 'gallery_detail' family_slug=user_family.slug gallery_pk=newest_media_gallery.id %}">Go to gallery</a>
     </div>
 
 {%  endblock %}

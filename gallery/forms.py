@@ -4,7 +4,7 @@ from gallery.models import Media
 
 
 class GalleryMediaCreateForm(ModelForm):
-    title = forms.CharField(max_length=32, label='Image title')
+    title = forms.CharField(max_length=32, label='Image title', required=False)
 
     class Meta:
         model = Media

@@ -1,11 +1,9 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.paginator import Paginator
-from django.shortcuts import render
-from django.urls import reverse_lazy
+from django.shortcuts import render, redirect
+from django.urls import reverse_lazy, reverse
 from django.views import View
-from django.views.generic import CreateView, FormView
-
-from family.models import Family
+from django.views.generic import FormView, DeleteView
 from gallery.forms import GalleryMediaCreateForm
 from gallery.models import Gallery, Media
 from family.views import GetUserFamilyMixin
@@ -27,9 +25,9 @@ class GalleryPickView(LoginRequiredMixin, GetUserFamilyMixin, View):
 
 class GalleryDetailView(LoginRequiredMixin, GetUserFamilyMixin, View):
 
-    def get(self, request, pk, family_slug):
+    def get(self, request, gallery_pk, family_slug):
         family = self.get_family(request.user, family_slug)
-        gallery = Gallery.objects.get(pk=pk, family=family)
+        gallery = Gallery.objects.get(pk=gallery_pk, family=family)
         medias = gallery.media_set.all().order_by('-upload_date')
 
         paginator = Paginator(medias, 10)
@@ -42,7 +40,6 @@ class GalleryDetailView(LoginRequiredMixin, GetUserFamilyMixin, View):
 
 class GalleryMediaCreateView(LoginRequiredMixin, FormView):
     form_class = GalleryMediaCreateForm
-    success_url = reverse_lazy('family_pick')
     template_name = 'gallery_media_add.html'
 
     def form_valid(self, form):
@@ -58,5 +55,29 @@ class GalleryMediaCreateView(LoginRequiredMixin, FormView):
             for gallery in galleries:
                 gallery.last_image_upload_date = image.upload_date
 
-        image.galleries.add(Gallery.objects.get(id=self.kwargs['pk']))
-        return super().form_valid(form)
+        image.galleries.add(Gallery.objects.get(id=self.kwargs['gallery_pk']))
+        return redirect(reverse('gallery_detail', args=(self.kwargs['family_slug'], self.kwargs['gallery_pk'])))
+
+
+class GalleryMediaDeleteView(LoginRequiredMixin, DeleteView):
+    model = Media
+    template_name = 'gallery_media_delete.html'
+    pk_url_kwarg = 'media_pk'
+
+    def get_success_url(self):
+        """
+        get_succes_url override that redirects to gallery_detail page
+        :return:
+        """
+        return reverse_lazy('gallery_detail', args=(self.kwargs['family_slug'], self.kwargs['gallery_pk']))
+
+    def delete(self, request, *args, **kwargs):
+        """
+        delete override that also deletes actual media file
+        :param request:
+        :param args:
+        :param kwargs:
+        :return:
+        """
+        self.get_object().image.delete()
+        return super().delete(request, *args, **kwargs)

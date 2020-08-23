@@ -11,7 +11,7 @@
         {% else %}
             <img src="{{ media.image.url }}" alt="{{ gallery.name }}" width="200px" height="200px"/>
         {% endif %}
-        <a href="{% url 'gallery_detail' family_slug=family.slug pk=gallery.id %}">{{ gallery.name }}</a>
+        <a href="{% url 'gallery_detail' family_slug=family.slug gallery_pk=gallery.id %}">{{ gallery.name }}</a>
     {% endfor%}
 
 {% endblock %}
