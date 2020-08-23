@@ -66,6 +66,7 @@ class GalleryMediaCreateView(LoginRequiredMixin, FormView):
         image = form.save()
         image.uploader = self.request.user
 
+        print('image title: ' + image.title)
         if not image.title:
             image.title = image.image.name
 
@@ -75,6 +76,7 @@ class GalleryMediaCreateView(LoginRequiredMixin, FormView):
                 gallery.last_image_upload_date = image.upload_date
 
         image.galleries.add(Gallery.objects.get(id=self.kwargs['gallery_pk']))
+        image.save()
         return redirect(reverse('gallery_detail', args=(self.kwargs['family_slug'], self.kwargs['gallery_pk'])))
 
 
