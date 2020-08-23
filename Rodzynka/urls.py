@@ -47,6 +47,8 @@ urlpatterns = [
             GalleryMediaCreateView.as_view(), name='gallery_media_add'),
     re_path(r'^family/(?P<family_slug>[a-z\d-]+)/gallery/(?P<gallery_pk>[\d]+)/delete/(?P<media_pk>[\d]+)/$',
             GalleryMediaDeleteView.as_view(), name='gallery_media_delete'),
+
+    re_path(r'^family/(?P<family_slug>[a-z\d-]+)/main/$', WishlistView.as_view(), name='wishlist')
 ]
 
 if settings.DEBUG:
