@@ -92,13 +92,3 @@ class GalleryMediaDeleteView(LoginRequiredMixin, DeleteView):
         """
         return reverse_lazy('gallery_detail', args=(self.kwargs['family_slug'], self.kwargs['gallery_pk']))
 
-    def delete(self, request, *args, **kwargs):
-        """
-        delete override that also deletes actual media file
-        :param request:
-        :param args:
-        :param kwargs:
-        :return:
-        """
-        self.get_object().image.delete()
-        return super().delete(request, *args, **kwargs)

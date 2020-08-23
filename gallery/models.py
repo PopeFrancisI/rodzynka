@@ -22,6 +22,10 @@ class Media(models.Model):
     image = models.ImageField(upload_to='user_images/')
     galleries = models.ManyToManyField(Gallery)
 
+    def delete(self, using=None, keep_parents=False):
+        self.image.delete()
+        return super().delete(keep_parents=False)
+
     def __str__(self):
         return f'Media: {self.title}, upload_date: {self.upload_date}, image: {self.image.name}'
 
