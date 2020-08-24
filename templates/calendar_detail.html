@@ -1,0 +1,27 @@
+{% extends 'family_base.html' %}
+
+{% block family_content %}
+
+    <h2>{{ current_calendar.name }} calendar</h2>
+
+    <ul>
+        {% for day in day_data %}
+            <li>
+                <b>{{ day.day_number }} - {{ day.day_of_week }}</b>
+                <br>
+                {% for event in day.events %}
+                    {% if event.is_important %}
+                        !!! 
+                    {% endif %}
+                    | {{ event.date_from|date:"H:i" }}
+                    -
+                    {{ event.date_to|date:"H:i"}} {{ event.title }}: {{ event.description }}
+                {% empty %}
+                {% endfor %}
+
+            </li>
+        {% endfor %}
+    </ul>
+
+
+{% endblock %}
