@@ -9,7 +9,18 @@
     </div>
 
     <div>
-        Newest events stub
+        <h3>Newest wishes on the Wishlist</h3>
+        {% for wish in newest_wishes %}
+            <ul>
+                <li>
+                    <b>{{ wish.user.username }} ({{ wish.user.first_name }} {{ wish.user.last_name }})'s wish:</b>
+                    <br>
+                    {{ wish.title }}
+                </li>
+            </ul>
+        {% empty %}
+            Nobody needs anything right now. Brilliant!
+        {% endfor %}
     </div>
 
     <div class="latest-image">

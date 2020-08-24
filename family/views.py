@@ -19,6 +19,12 @@ class GetUserFamilyMixin:
 
 
 def get_newest_media(family):
+    """
+    returns a tuple where first value is the newest media/image from family gallery,
+    and the second value is the gallery containing that media/image.
+    :param family:
+    :return:
+    """
     last_updated_gallery = family.gallery_set.all().order_by('last_media_upload_date').first()
     try:
         newest_media = last_updated_gallery.media_set.latest('upload_date')
@@ -27,14 +33,37 @@ def get_newest_media(family):
     return newest_media, last_updated_gallery
 
 
+def get_newest_wishes(family, n=5):
+    """
+    returns n newest family wishes
+    :param family:
+    :param n: number of wishes to be returned
+    :return:
+    """
+    family: Family
+    try:
+        newest_wishes = family.wish_set.order_by('-create_date')[:n]
+    except Exception:
+        newest_wishes = None
+
+    return newest_wishes
+
+
 class FamilyMainView(LoginRequiredMixin, GetUserFamilyMixin, View):
 
     def get(self, request, family_slug):
         family = self.get_family(request.user, family_slug)
+
         newest_media_results = get_newest_media(family)
         newest_media = newest_media_results[0]
         newest_media_gallery = newest_media_results[1]
-        context = {'user_family': family, 'newest_media': newest_media, 'newest_media_gallery': newest_media_gallery}
+
+        newest_wishes = get_newest_wishes(family)
+
+        context = {'user_family': family,
+                   'newest_media': newest_media,
+                   'newest_media_gallery': newest_media_gallery,
+                   'newest_wishes': newest_wishes}
         request.session['current_family_slug'] = family.slug
 
         return render(request, 'family_main.html', context)
