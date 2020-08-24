@@ -46,6 +46,7 @@ class WishCreateView(LoginRequiredMixin, CreateView):
     def get_form(self, form_class=None):
         form = super(WishCreateView, self).get_form(form_class)
         form.fields['is_important'].widget = forms.CheckboxInput()
+        form.fields['description'].required = False
         return form
 
     def get_success_url(self):
@@ -95,6 +96,7 @@ class WishUpdateView(LoginRequiredMixin, UpdateView):
     def get_form(self, form_class=None):
         form = super(WishUpdateView, self).get_form(form_class)
         form.fields['is_important'].widget = forms.CheckboxInput()
+        form.fields['description'].required = False
         return form
 
     def get_success_url(self):
