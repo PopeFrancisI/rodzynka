@@ -9,6 +9,7 @@ class Gallery(models.Model):
     is_main = models.BooleanField(default=False)
     create_date = models.DateTimeField(auto_now_add=True)
     last_media_upload_date = models.DateTimeField(null=True, default=None)
+    creator = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
     family = models.ForeignKey(Family, on_delete=models.CASCADE)
 
     def __str__(self):
@@ -30,10 +31,11 @@ class Media(models.Model):
         return f'{self.title} (upload_date: {self.upload_date})'
 
 
-def create_gallery(name, family, is_main):
+def create_gallery(name, family, is_main, creator=None):
     gallery = Gallery.objects.create(
         name=name,
         family=family,
-        is_main=is_main
+        is_main=is_main,
+        creator=creator
     )
     return gallery

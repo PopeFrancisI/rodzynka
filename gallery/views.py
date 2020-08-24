@@ -1,5 +1,6 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.paginator import Paginator
+from django.db.models import QuerySet
 from django.forms import Form
 from django.shortcuts import render, redirect
 from django.urls import reverse_lazy, reverse
@@ -12,7 +13,6 @@ from gallery.models import Gallery, Media, create_gallery
 from family.views import GetUserFamilyMixin
 
 
-# Create your views here.
 class GalleryPickView(LoginRequiredMixin, GetUserFamilyMixin, View):
 
     def get(self, request, family_slug):
@@ -49,8 +49,9 @@ class GalleryCreateView(LoginRequiredMixin, CreateView):
         :return:
         """
         name = form.cleaned_data.get('name')
+        creator = self.request.user
         family = Family.objects.get(slug=self.kwargs['family_slug'])
-        create_gallery(name, family, False)
+        create_gallery(name, family, False, creator)
 
         return redirect(self.get_success_url())
 
@@ -79,11 +80,14 @@ class GalleryDeleteView(LoginRequiredMixin, DeleteView):
 
         if gallery.is_main:
             return redirect(self.get_success_url())
-        else:
-            gallery_medias = self.get_object().media_set.all()
-            for media in gallery_medias:
-                media.delete()
-            return super().delete(request, *args, **kwargs)
+
+        if gallery.creator != request.user:
+            return redirect(self.get_success_url())
+
+        gallery_medias = self.get_object().media_set.all()
+        for media in gallery_medias:
+            media.delete()
+        return super().delete(request, *args, **kwargs)
 
 
 class GalleryDetailView(LoginRequiredMixin, GetUserFamilyMixin, View):
@@ -124,13 +128,16 @@ class GalleryMediaCreateView(LoginRequiredMixin, FormView):
         if not image.title:
             image.title = image.image.name
 
-        if image.galleries:
-            galleries = image.galleries.all()
-            for gallery in galleries:
-                gallery.last_image_upload_date = image.upload_date
+        current_gallery = Gallery.objects.get(id=self.kwargs['gallery_pk'])
+        image.galleries.add(current_gallery)
 
-        image.galleries.add(Gallery.objects.get(id=self.kwargs['gallery_pk']))
+        galleries = image.galleries.all()
+        for gallery in galleries:
+            gallery.last_media_upload_date = image.upload_date
+        galleries.bulk_update(galleries, ['last_media_upload_date'])
+
         image.save()
+
         return redirect(reverse('gallery_detail', args=(self.kwargs['family_slug'], self.kwargs['gallery_pk'])))
 
 
@@ -145,4 +152,20 @@ class GalleryMediaDeleteView(LoginRequiredMixin, DeleteView):
         :return:
         """
         return reverse_lazy('gallery_detail', args=(self.kwargs['family_slug'], self.kwargs['gallery_pk']))
+
+    def delete(self, request, *args, **kwargs):
+        """
+        Deletes media if logged user is the uploader of the media
+        :param request:
+        :param args:
+        :param kwargs:
+        :return:
+        """
+        media = self.get_object()
+
+        if media.uploader != request.user:
+            return redirect(self.get_success_url())
+
+        return super().delete(request, *args, **kwargs)
+
 
