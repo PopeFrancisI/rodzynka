@@ -6,7 +6,7 @@ from django.forms import Form
 from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
 from django.views import View
-from django.views.generic import CreateView, DeleteView
+from django.views.generic import CreateView, DeleteView, UpdateView
 
 from family.models import Family
 from family.views import GetUserFamilyMixin
@@ -34,6 +34,10 @@ class WishlistView(LoginRequiredMixin, GetUserFamilyMixin, View):
         return render(request, 'wishlist.html', context)
 
 
+def wishlist_success_url(view):
+    return reverse_lazy('wishlist', args=(view.kwargs['family_slug'],))
+
+
 class WishCreateView(LoginRequiredMixin, CreateView):
     model = Wish
     template_name = 'wish_create.html'
@@ -45,7 +49,7 @@ class WishCreateView(LoginRequiredMixin, CreateView):
         return form
 
     def get_success_url(self):
-        return reverse_lazy('wishlist', args=(self.kwargs['family_slug'], ))
+        return wishlist_success_url(self)
 
     def form_valid(self, form):
         form: Form
@@ -72,7 +76,7 @@ class WishDeleteView(LoginRequiredMixin, DeleteView):
     pk_url_kwarg = 'wish_pk'
 
     def get_success_url(self):
-        return reverse_lazy('wishlist', args=(self.kwargs['family_slug'], ))
+        return wishlist_success_url(self)
 
     def delete(self, request, *args, **kwargs):
         wish = self.get_object()
@@ -80,3 +84,25 @@ class WishDeleteView(LoginRequiredMixin, DeleteView):
             return redirect(self.get_success_url())
         else:
             return super(WishDeleteView, self).delete(request, *args, **kwargs)
+
+
+class WishUpdateView(LoginRequiredMixin, UpdateView):
+    model = Wish
+    template_name = 'wish_update.html'
+    pk_url_kwarg = 'wish_pk'
+    fields = ['title', 'description', 'is_important']
+
+    def get_form(self, form_class=None):
+        form = super(WishUpdateView, self).get_form(form_class)
+        form.fields['is_important'].widget = forms.CheckboxInput()
+        return form
+
+    def get_success_url(self):
+        return wishlist_success_url(self)
+
+    def form_valid(self, form):
+        if self.object.user != self.request.user:
+            return redirect(self.get_success_url())
+        else:
+            return super().form_valid(form)
+
