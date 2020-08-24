@@ -19,6 +19,7 @@ from django.contrib.auth.views import LoginView, LogoutView
 from django.urls import path, re_path
 
 from Rodzynka import settings
+from calendars.views import CalendarDetailView
 from family.views import FamilyMainView, FamilyPickView, IndexView, FamilyCreateView
 from gallery.views import GalleryPickView, GalleryDetailView, GalleryMediaCreateView, GalleryMediaDeleteView, \
     GalleryDeleteView, GalleryCreateView
@@ -55,6 +56,9 @@ urlpatterns = [
             name='wish_delete'),
     re_path(r'^family/(?P<family_slug>[a-z\d-]+)/wishlist/update/(?P<wish_pk>[\d]+)$', WishUpdateView.as_view(),
             name='wish_update'),
+
+    re_path(r'^family/(?P<family_slug>[a-z\d-]+)/calendar/(?P<calendar_pk>[\d]+)/$', CalendarDetailView.as_view(),
+            name='calendar_detail'),
 ]
 
 if settings.DEBUG:
