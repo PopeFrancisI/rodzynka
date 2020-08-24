@@ -148,7 +148,7 @@ class GalleryMediaDeleteView(LoginRequiredMixin, DeleteView):
 
     def get_success_url(self):
         """
-        get_succes_url override that redirects to gallery_detail page
+        get_success_url override that redirects to gallery_detail page
         :return:
         """
         return reverse_lazy('gallery_detail', args=(self.kwargs['family_slug'], self.kwargs['gallery_pk']))
@@ -167,5 +167,4 @@ class GalleryMediaDeleteView(LoginRequiredMixin, DeleteView):
             return redirect(self.get_success_url())
 
         return super().delete(request, *args, **kwargs)
-
 

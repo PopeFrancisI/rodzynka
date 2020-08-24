@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'family',
     'gallery',
     'wishlist',
+    'calendars',
 ]
 
 MIDDLEWARE = [
