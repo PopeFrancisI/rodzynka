@@ -8,6 +8,7 @@ class Wish(models.Model):
     title = models.CharField(max_length=64)
     description = models.TextField(null=True)
     is_important = models.BooleanField(default=False)
+    create_date = models.DateTimeField(auto_now_add=True)
     family = models.ForeignKey(Family, on_delete=models.CASCADE)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
 
