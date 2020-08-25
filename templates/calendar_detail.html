@@ -28,14 +28,13 @@
         {% for day in day_data %}
             <li>
                 <b>{{ day.day_number }} - {{ day.day_of_week }}</b>
+                <a href="{% url 'event_create' family_slug=family.slug calendar_pk=current_calendar.id year=year month=month day=day.day_number %}">+ New event</a>
                 <br>
                 {% for event in day.events %}
                     {% if event.is_important %}
                         !!! 
                     {% endif %}
-                    | {{ event.date_from|date:"H:i" }}
-                    -
-                    {{ event.date_to|date:"H:i"}} {{ event.title }}: {{ event.description }}
+                    | {{ event.date|date:"H:i" }} - {{ event.title }}: {{ event.description }}
                 {% empty %}
                 {% endfor %}
 

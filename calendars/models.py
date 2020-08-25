@@ -41,8 +41,7 @@ class EventDateTimeField(models.DateTimeField):
 class Event(models.Model):
     title = models.CharField(max_length=128)
     description = models.TextField(default='')
-    date_from = models.DateTimeField()
-    date_to = models.DateTimeField(null=True)
+    date = models.DateTimeField()
     is_important = models.BooleanField(default=False)
     creator = models.ForeignKey(User, on_delete=models.CASCADE)
     calendar = models.ForeignKey(Calendar, on_delete=models.CASCADE)

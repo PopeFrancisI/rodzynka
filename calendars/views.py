@@ -1,13 +1,17 @@
 from calendar import monthrange
 from collections import defaultdict
+from datetime import datetime
 
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.models import User
+from django.forms import ModelForm
 from django.shortcuts import render, redirect
 from django.urls import reverse
 from django.utils import timezone
 from django.views import View
+from django.views.generic import CreateView
 
+from calendars.models import Event, Calendar
 from family.views import GetUserFamilyMixin
 
 
@@ -60,11 +64,11 @@ class CalendarDetailView(LoginRequiredMixin, GetUserFamilyMixin, View):
         month = year_month_tuple[1]
 
         month_data = monthrange(int(year), int(month))
-        month_events = current_calendar.event_set.filter(date_from__month=month)
+        month_events = current_calendar.event_set.filter(date__month=month)
         days_dict = defaultdict(list)
 
         for event in month_events:
-            day_number = event.date_from.day
+            day_number = event.date.day
             days_dict[day_number].append(event)
 
         days_list = []
@@ -107,3 +111,64 @@ class CalendarDetailView(LoginRequiredMixin, GetUserFamilyMixin, View):
             month = int(month)
         return year, month
 
+
+class EventCreateView(LoginRequiredMixin, CreateView):
+    model = Event
+    fields = ['title', 'description', 'is_important']
+    template_name = 'event_create.html'
+
+    def get_success_url(self):
+        return reverse('calendar_detail',
+                       args=(self.kwargs['family_slug'],
+                             self.kwargs['calendar_pk'],
+                             self.kwargs['year'],
+                             self.kwargs['month']))
+
+    def get_form(self, form_class=None):
+        form = super().get_form(form_class)
+        form.fields['description'].required = False
+        return form
+
+    def form_valid(self, form):
+
+        form: ModelForm
+        title = form.cleaned_data.get('title')
+        description = form.cleaned_data.get('description')
+        is_important = form.cleaned_data.get('is_important')
+
+        time = self.request.POST.get('time')
+        if time:
+            split_time = time.split(':')
+            hour = int(split_time[0])
+            minute = int(split_time[1])
+        else:
+            hour = 0
+            minute = 0
+
+        year = int(self.kwargs['year'])
+        month = int(self.kwargs['month'])
+        day = int(self.kwargs['day'])
+
+        date = datetime(
+            year=year,
+            month=month,
+            day=day,
+            hour=hour,
+            minute=minute
+        )
+
+        creator = self.request.user
+        calendar = Calendar.objects.get(id=self.kwargs['calendar_pk'])
+
+        event = Event(
+            title=title,
+            description=description,
+            is_important=is_important,
+            date=date,
+            creator=creator,
+            calendar=calendar
+        )
+
+        event.save()
+
+        return redirect(self.get_success_url())
