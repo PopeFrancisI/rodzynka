@@ -8,3 +8,4 @@ class Family(models.Model):
     slug = models.SlugField(max_length=64, unique=True)
     user = models.ManyToManyField(User)
     invited_users = models.ManyToManyField(User, related_name='inviting_families')
+    requesting_users = models.ManyToManyField(User, related_name='requested_families')
