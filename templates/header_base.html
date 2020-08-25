@@ -1,0 +1,14 @@
+{% block header_base %}
+
+    <div class="header">
+        <b>Rodzynka</b>
+
+            {% block header_content %}
+            {% endblock %}
+
+        <a href="{% url 'logout' %}">Log out</a>
+    </div>
+
+    <hr>
+
+{% endblock %}

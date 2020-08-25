@@ -1,0 +1,17 @@
+{% extends 'header_base.html' %}
+
+{% block header_content %}
+
+    {% for family in user_families %}
+        <a href="{% url 'family_main' family_slug=family.slug %}">{{ family.name }} ({{ family.last_name }})</a>
+    {% endfor %}
+
+    <a href="{% url 'family_create' %}">New family</a>
+
+    <a href="{% url 'calendar_detail' family_slug=current_family.slug %}">Calendar</a>
+
+    <a href="{% url 'gallery_pick' family_slug=current_family.slug %}">Gallery</a>
+
+    <a href="{% url 'wishlist' family_slug=current_family.slug %}">Wishlist</a>
+
+{% endblock %}

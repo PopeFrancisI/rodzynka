@@ -1,24 +1,10 @@
 {% extends 'base.html' %}
 
 {% block content %}
-    <div class="header">
-        <b>Rodzynka</b>
 
-        {% for family in user_families %}
-            <a href="{% url 'family_main' family_slug=family.slug %}">{{ family.name }} ({{ family.last_name }})</a>
-        {% endfor %}
+    {% include 'family_header.html' %}
 
-        <a href="{% url 'family_create' %}">New family</a>
 
-        <a href="{% url 'calendar_detail' family_slug=current_family.slug %}">Calendar</a>
-
-        <a href="{% url 'gallery_pick' family_slug=current_family.slug %}">Gallery</a>
-
-        <a href="{% url 'wishlist' family_slug=current_family.slug %}">Wishlist</a>
-
-        <a href="{% url 'logout' %}">Log out</a>
-    </div>
-    <hr>
     {% block family_content %}
 
     {% endblock %}
