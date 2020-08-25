@@ -1,4 +1,5 @@
 from django.contrib.auth.models import User
+from django.core.exceptions import ObjectDoesNotExist
 from django.shortcuts import render, redirect
 from django.urls import reverse, reverse_lazy
 from django.views import View
@@ -73,12 +74,40 @@ class FamilyMainView(LoginRequiredMixin, GetUserFamilyMixin, View):
 class FamilyPickView(LoginRequiredMixin, View):
 
     def get(self, request):
-        user_families = Family.objects.filter(user=self.request.user)
+        user = self.request.user
+        user_families = Family.objects.filter(user=user)
 
         if len(user_families) == 1:
             return redirect(reverse('family_main', args=(user_families.first().slug, )))
 
-        return render(request, 'family_pick.html')
+        inviting_families = user.inviting_families.all()
+
+        return render(request, 'family_pick.html', context={'inviting_families': inviting_families})
+
+
+def family_add_user(family, user):
+    family.user.add(user)
+    main_calendar = family.calendar_set.get(is_main=True)
+    main_calendar.users.add(user)
+
+
+class FamilyJoinView(LoginRequiredMixin, View):
+
+    def get(self, request, family_slug):
+        family = Family.objects.get(slug=family_slug)
+        context = {'family': family}
+
+        return render(request, 'family_join.html', context)
+
+    def post(self, request, family_slug):
+        family = Family.objects.get(slug=family_slug)
+
+        if request.POST.get('accept'):
+            family_add_user(family, request.user)
+            return redirect(reverse('family_main', args=(family_slug, )))
+        else:
+            family.invited_users.remove(request.user)
+            return redirect(reverse('family_pick'))
 
 
 class IndexView(View):
@@ -120,6 +149,6 @@ class FamilyInviteView(LoginRequiredMixin, FormView):
         user = User.objects.get(username=form.cleaned_data.get('username'))
         family = Family.objects.get(slug=self.kwargs['family_slug'])
 
-        family.invitations.add(user)
+        family.invited_users.add(user)
 
         return redirect(self.get_success_url())

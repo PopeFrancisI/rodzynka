@@ -1,6 +1,7 @@
 {% extends 'base.html' %}
 {% block content %}
 
+    <h2>Choose a family</h2>
     {% for family in user_families %}
         <a href="{% url 'family_main' family_slug=family.slug %}">{{ family.name }} ({{ family.last_name }})</a>
         <br>
@@ -9,5 +10,11 @@
     {% endfor %}
 
     <a href="{% url 'family_create' %}">+ Create a new family</a>
+    <br>
+
+    <h2>Invitations</h2>
+    {% for family in inviting_families %}
+        <a href="{% url 'family_join' family_slug=family.slug %}">You got invited to {{ family.name }} family!</a>
+    {% endfor %}
 
 {% endblock %}

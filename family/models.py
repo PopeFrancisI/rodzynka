@@ -7,4 +7,4 @@ class Family(models.Model):
     last_name = models.CharField(max_length=64)
     slug = models.SlugField(max_length=64, unique=True)
     user = models.ManyToManyField(User)
-    invitations = models.ManyToManyField(User, related_name='invited_user')
+    invited_users = models.ManyToManyField(User, related_name='inviting_families')
