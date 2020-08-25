@@ -1,16 +1,15 @@
 from django.contrib.auth.models import User
-from django.forms import Form
 from django.shortcuts import render, redirect
 from django.urls import reverse, reverse_lazy
 from django.views import View
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.views.generic import CreateView, FormView
+from django.views.generic import FormView
 
 from calendars.models import create_calendar
-from family.forms import FamilyCreateForm
+from family.forms import FamilyCreateForm, FamilyInviteForm
 from family.models import Family
 from family.utils import slugify
-from gallery.models import Gallery, create_gallery
+from gallery.models import create_gallery
 
 
 class GetUserFamilyMixin:
@@ -108,3 +107,19 @@ class FamilyCreateView(FormView):
         create_calendar(f'family calendar', family, True)
 
         return super().form_valid(form)
+
+
+class FamilyInviteView(FormView):
+    form_class = FamilyInviteForm
+    template_name = 'family_invite.html'
+
+    def get_success_url(self):
+        return reverse('family_main', args=(self.kwargs['family_slug'], ))
+
+    def form_valid(self, form):
+        user = User.objects.get(username=form.cleaned_data.get('username'))
+        family = Family.objects.get(slug=self.kwargs['family_slug'])
+
+        family.invitations.add(user)
+
+        return redirect(self.get_success_url())

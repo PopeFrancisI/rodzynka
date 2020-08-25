@@ -1,0 +1,11 @@
+{% extends 'family_base.html' %}
+
+{% block family_content %}
+    <h2>Invite a new member</h2>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <input type="submit" value="Send invite">
+    </form>
+
+{% endblock %}

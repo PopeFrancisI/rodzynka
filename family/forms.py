@@ -1,6 +1,8 @@
-from django.forms import ModelForm
+from django.contrib.auth.models import User
+from django.forms import ModelForm, Form
 from django import forms
 from family.models import Family
+from family.validators import validate_user_exists
 
 
 class FamilyCreateForm(ModelForm):
@@ -11,3 +13,13 @@ class FamilyCreateForm(ModelForm):
     class Meta:
         model = Family
         fields = ['name', 'last_name']
+
+
+class FamilyInviteForm(Form):
+    username = forms.CharField(max_length=150,
+                               required=True,
+                               help_text='Username is case-sensitive',
+                               validators=[validate_user_exists])
+
+    class Meta:
+        fields = ['username']

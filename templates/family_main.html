@@ -5,7 +5,17 @@
     <h2>{{ user_family.name }} family ({{ user_family.last_name }})</h2>
 
     <div>
-        Newest events stub
+        <h3>Family members</h3>
+        |
+        {% for member in user_family.user.all %}
+            {{ member.username }} ({{ member.first_name }} {{ member.last_name }}) |
+        {% endfor %}
+        <br>
+        <a href="{% url 'family_invite' family_slug=user_family.slug %}"><b>Invite a new member</b></a>
+    </div>
+
+    <div>
+        <h3>Newest events from the Calendar</h3>
     </div>
 
     <div>
