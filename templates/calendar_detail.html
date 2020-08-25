@@ -4,6 +4,26 @@
 
     <h2>{{ current_calendar.name }}</h2>
 
+    <form action="{% url 'calendar_detail' family_slug=family.slug calendar_pk=current_calendar.id %}" method="post">
+        {% csrf_token %}
+        <label for="year">Year:</label>
+        <input type="text" name="year" id="year" value="{% now "Y" %}">
+
+        <label for="month">Month:</label>
+        <select name="month" id="month">
+        {% for month_number, month_name in months_all.items %}
+            <option value="{{ month_number }}"
+                    {% if month_number == month %}
+                        selected
+                    {% endif %}
+            >{{ month_name }}</option>
+        {% endfor %}
+
+        </select>
+        <input type="submit" value="Go to selected date">
+    </form>
+
+
     <ul>
         {% for day in day_data %}
             <li>

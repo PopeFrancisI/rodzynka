@@ -3,7 +3,8 @@ from collections import defaultdict
 
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.models import User
-from django.shortcuts import render
+from django.shortcuts import render, redirect
+from django.urls import reverse
 from django.utils import timezone
 from django.views import View
 
@@ -18,6 +19,21 @@ days_of_week = {
     4: 'Friday',
     5: 'Saturday',
     6: 'Sunday'
+}
+
+months_dict = {
+    1: 'January',
+    2: 'February',
+    3: 'March',
+    4: 'April',
+    5: 'May',
+    6: 'June',
+    7: 'July',
+    8: 'August',
+    9: 'September',
+    10: 'October',
+    11: 'November',
+    12: 'December'
 }
 
 
@@ -66,9 +82,18 @@ class CalendarDetailView(LoginRequiredMixin, GetUserFamilyMixin, View):
                    'user_calendars': user_calendars,
                    'year': year,
                    'month': month,
-                   'day_data': days_list}
+                   'day_data': days_list,
+                   'months_all': months_dict}
 
         return render(request, 'calendar_detail.html', context)
+
+    def post(self, request, family_slug, calendar_pk=None, year=None, month=None):
+        year = request.POST.get('year')
+        month = request.POST.get('month')
+        if year and month:
+            return redirect(reverse('calendar_detail', args=(family_slug, self.kwargs['calendar_pk'], year, month)))
+        else:
+            return redirect(reverse('calendar_detail', args=(family_slug, self.kwargs['calendar_pk'])))
 
     @staticmethod
     def date_to_int(year, month):
