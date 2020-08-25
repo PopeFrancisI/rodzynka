@@ -1,5 +1,4 @@
 from django.contrib.auth.models import User
-from django.core.exceptions import ObjectDoesNotExist
 from django.shortcuts import render, redirect
 from django.urls import reverse, reverse_lazy
 from django.views import View
@@ -188,6 +187,7 @@ class FamilyAddUserView(LoginRequiredMixin, View):
 
         if request.POST.get('accept'):
             family_add_user(family, requesting_user)
+            family.requesting_users.remove(requesting_user)
         else:
             family.requesting_users.remove(requesting_user)
 
