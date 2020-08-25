@@ -11,6 +11,23 @@ class Calendar(models.Model):
     users = models.ManyToManyField(User)
 
 
+def create_calendar(name, family, is_main=False, users=None):
+
+    if is_main or not users:
+        users = family.user.all()
+
+    calendar = Calendar.objects.create(
+        name=name,
+        is_main=is_main,
+        family=family,
+    )
+    calendar.users.set(users)
+
+    calendar = calendar.save()
+
+    return calendar
+
+
 class EventDateTimeField(models.DateTimeField):
 
     def value_to_string(self, obj):
