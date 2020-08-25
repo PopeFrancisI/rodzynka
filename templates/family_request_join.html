@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+{% block content %}
+
+    {% if request.user.family_set.first %}
+        {% include 'family_header.html' %}
+    {% else %}
+        {% include 'header_base.html' %}
+    {% endif %}
+
+    <h2>Join a family</h2>
+
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <input type="submit" value="Send join request">
+    </form>
+
+{% endblock %}

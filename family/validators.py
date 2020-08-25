@@ -1,6 +1,8 @@
 from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError, ObjectDoesNotExist
 
+from family.models import Family
+
 
 def validate_user_exists(value):
     try:

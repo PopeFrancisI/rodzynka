@@ -23,7 +23,7 @@ from calendars.views import CalendarDetailView
 from family.views import FamilyMainView, FamilyPickView, IndexView, FamilyCreateView, FamilyInviteView, FamilyJoinView
 from gallery.views import GalleryPickView, GalleryDetailView, GalleryMediaCreateView, GalleryMediaDeleteView, \
     GalleryDeleteView, GalleryCreateView
-from users.views import SignupView
+from users.views import SignupView, FamilyRequestJoinView
 from wishlist.views import WishlistView, WishCreateView, WishDeleteView, WishUpdateView
 
 urlpatterns = [
@@ -35,10 +35,12 @@ urlpatterns = [
     re_path(r'^$', IndexView.as_view(), name='index'),
 
     re_path(r'^family/pick/$', FamilyPickView.as_view(), name='family_pick'),
+    re_path(r'^family/requestjoin/$', FamilyRequestJoinView.as_view(), name='family_request_join'),
     re_path(r'^family/create/$', FamilyCreateView.as_view(), name='family_create'),
     re_path(r'^family/(?P<family_slug>[a-z\d-]+)/main/$', FamilyMainView.as_view(), name='family_main'),
     re_path(r'^family/(?P<family_slug>[a-z\d-]+)/invite/$', FamilyInviteView.as_view(), name='family_invite'),
     re_path(r'^family/(?P<family_slug>[a-z\d-]+)/join/$', FamilyJoinView.as_view(), name='family_join'),
+
 
     re_path(r'^family/(?P<family_slug>[a-z\d-]+)/gallery/pick/$', GalleryPickView.as_view(), name='gallery_pick'),
     re_path(r'^family/(?P<family_slug>[a-z\d-]+)/gallery/(?P<gallery_pk>[\d]+)/$',

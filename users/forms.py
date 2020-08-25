@@ -1,7 +1,9 @@
 from django.contrib.auth.forms import UserCreationForm
 from django import forms
 from django.contrib.auth.models import User
-from users.validators import validate_name_length, validate_name_letters_only
+from django.forms import Form
+
+from users.validators import validate_name_length, validate_name_letters_only, validate_family_exists
 
 
 class ExtendedUserCreationForm(UserCreationForm):
@@ -18,3 +20,12 @@ class ExtendedUserCreationForm(UserCreationForm):
     class Meta:
         model = User
         fields = ['username', 'first_name', 'last_name', 'email', 'password1', 'password2']
+
+
+class FamilyRequestJoinForm(Form):
+    name = forms.CharField(
+        max_length=150,
+        required=True,
+        help_text='Family name is case-sensitive',
+        validators=[validate_family_exists]
+    )

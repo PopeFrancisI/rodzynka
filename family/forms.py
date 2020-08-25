@@ -20,6 +20,3 @@ class FamilyInviteForm(Form):
                                required=True,
                                help_text='Username is case-sensitive',
                                validators=[validate_user_exists])
-
-    class Meta:
-        fields = ['username']

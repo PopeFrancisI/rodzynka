@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 
 {% block content %}
-    <h2>Do you accept an invitation to he {{ family.name }} family?</h2>
+    <h2>Do you accept an invitation to the {{ family.name }} family?</h2>
     <form method="post">
         {% csrf_token %}
         <input type="submit" name="accept" value="Accept">
