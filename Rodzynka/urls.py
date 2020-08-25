@@ -40,7 +40,7 @@ urlpatterns = [
     re_path(r'^family/requestjoin/$', FamilyRequestJoinView.as_view(), name='family_request_join'),
     re_path(r'^family/(?P<family_slug>[a-z\d-]+)/add/(?P<user_pk>[\d]+)/$',
             FamilyAddUserView.as_view(), name='family_add_user'),
-    re_path(r'^family/(?P<family_slug>[a-z\d-]+)/main/$', FamilyMainView.as_view(), name='family_main'),
+    re_path(r'^family/(?P<family_slug>[a-z\d-]+)/$', FamilyMainView.as_view(), name='family_main'),
     re_path(r'^family/(?P<family_slug>[a-z\d-]+)/invite/$', FamilyInviteView.as_view(), name='family_invite'),
     re_path(r'^family/(?P<family_slug>[a-z\d-]+)/join/$', FamilyJoinView.as_view(), name='family_join'),
 
