@@ -7,5 +7,5 @@ class Family(models.Model):
     last_name = models.CharField(max_length=64)
     slug = models.SlugField(max_length=64, unique=True)
     user = models.ManyToManyField(User)
-    invited_users = models.ManyToManyField(User, related_name='inviting_families')
-    requesting_users = models.ManyToManyField(User, related_name='requested_families')
+    invited_users = models.ManyToManyField(User, related_name='inviting_families', blank=True)
+    requesting_users = models.ManyToManyField(User, related_name='requested_families', blank=True)

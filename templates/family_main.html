@@ -5,6 +5,16 @@
     <h2>{{ user_family.name }} family ({{ user_family.last_name }})</h2>
 
     <div>
+        {% if requesting_users %}
+            <h3>Family join requests</h3>
+            {% for user in requesting_users %}
+                <a href="{% url 'family_add_user' family_slug=user_family.slug user_pk=user.id %}">{{ user.username }} wants to join!</a>
+            {% endfor %}
+        {% endif %}
+
+    </div>
+
+    <div>
         <h3>Family members</h3>
         |
         {% for member in user_family.user.all %}

@@ -7,7 +7,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic import FormView
 
 from calendars.models import create_calendar
-from family.forms import FamilyCreateForm, FamilyInviteForm
+from family.forms import FamilyCreateForm, FamilyInviteForm, FamilyRequestJoinForm
 from family.models import Family
 from family.utils import slugify
 from gallery.models import create_gallery
@@ -62,10 +62,13 @@ class FamilyMainView(LoginRequiredMixin, GetUserFamilyMixin, View):
 
         newest_wishes = get_newest_wishes(family)
 
+        users_requesting_join = family.requesting_users.all()
+
         context = {'user_family': family,
                    'newest_media': newest_media,
                    'newest_media_gallery': newest_media_gallery,
-                   'newest_wishes': newest_wishes}
+                   'newest_wishes': newest_wishes,
+                   'requesting_users': users_requesting_join}
         request.session['current_family_slug'] = family.slug
 
         return render(request, 'family_main.html', context)
@@ -152,3 +155,40 @@ class FamilyInviteView(LoginRequiredMixin, FormView):
         family.invited_users.add(user)
 
         return redirect(self.get_success_url())
+
+
+class FamilyRequestJoinView(LoginRequiredMixin, FormView):
+    form_class = FamilyRequestJoinForm
+    template_name = 'family_request_join.html'
+
+    def get_success_url(self):
+        return reverse('family_pick')
+
+    def form_valid(self, form):
+        user = self.request.user
+        family = Family.objects.get(name=form.cleaned_data.get('name'))
+
+        family.requesting_users.add(user)
+
+        return redirect(self.get_success_url())
+
+
+class FamilyAddUserView(LoginRequiredMixin, View):
+
+    def get(self, request, family_slug, user_pk):
+        family = Family.objects.get(slug=family_slug)
+        user = User.objects.get(id=user_pk)
+        context = {'family': family, "requesting_user": user}
+
+        return render(request, 'family_add_user.html', context)
+
+    def post(self, request, family_slug, user_pk):
+        family = Family.objects.get(slug=family_slug)
+        requesting_user = User.objects.get(id=user_pk)
+
+        if request.POST.get('accept'):
+            family_add_user(family, requesting_user)
+        else:
+            family.requesting_users.remove(requesting_user)
+
+        return redirect(reverse('family_main', args=(family_slug,)))
