@@ -10,6 +10,8 @@
 
         <a href="{% url 'family_create' %}">New family</a>
 
+        <a href="{% url 'calendar_detail' family_slug=current_family.slug %}">Calendar</a>
+
         <a href="{% url 'gallery_pick' family_slug=current_family.slug %}">Gallery</a>
 
         <a href="{% url 'wishlist' family_slug=current_family.slug %}">Wishlist</a>

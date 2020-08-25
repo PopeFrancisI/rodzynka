@@ -57,9 +57,10 @@ urlpatterns = [
     re_path(r'^family/(?P<family_slug>[a-z\d-]+)/wishlist/update/(?P<wish_pk>[\d]+)$', WishUpdateView.as_view(),
             name='wish_update'),
 
-    re_path(r'^family/(?P<family_slug>[a-z\d-]+)/calendar/(?P<calendar_pk>[\d]+)/(?P<year>[\d]{4})/(?P<month>[\d]+)/$',
-            CalendarDetailView.as_view(), name='calendar_detail'),
+    re_path(r'^family/(?P<family_slug>[a-z\d-]+)/calendar/$', CalendarDetailView.as_view(), name='calendar_detail'),
     re_path(r'^family/(?P<family_slug>[a-z\d-]+)/calendar/(?P<calendar_pk>[\d]+)/$',
+            CalendarDetailView.as_view(), name='calendar_detail'),
+    re_path(r'^family/(?P<family_slug>[a-z\d-]+)/calendar/(?P<calendar_pk>[\d]+)/(?P<year>[\d]{4})/(?P<month>[\d]+)/$',
             CalendarDetailView.as_view(), name='calendar_detail'),
 ]
 

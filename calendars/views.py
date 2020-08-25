@@ -30,10 +30,13 @@ class Day:
 
 class CalendarDetailView(LoginRequiredMixin, GetUserFamilyMixin, View):
 
-    def get(self, request, family_slug, calendar_pk, year=None, month=None):
+    def get(self, request, family_slug, calendar_pk=None, year=None, month=None):
 
         family = self.get_family(request.user, family_slug)
         user_calendars = request.user.calendar_set.filter(family=family)
+
+        if calendar_pk is None:
+            calendar_pk = family.calendar_set.get(is_main=True).id
         current_calendar = request.user.calendar_set.get(id=calendar_pk, family=family)
 
         year_month_tuple = self.date_to_int(year, month)
