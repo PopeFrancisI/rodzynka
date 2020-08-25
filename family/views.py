@@ -87,7 +87,7 @@ class IndexView(View):
         return render(request, 'index.html')
 
 
-class FamilyCreateView(FormView):
+class FamilyCreateView(LoginRequiredMixin, FormView):
     form_class = FamilyCreateForm
     template_name = 'family_create.html'
     success_url = reverse_lazy('family_pick')
@@ -109,7 +109,7 @@ class FamilyCreateView(FormView):
         return super().form_valid(form)
 
 
-class FamilyInviteView(FormView):
+class FamilyInviteView(LoginRequiredMixin, FormView):
     form_class = FamilyInviteForm
     template_name = 'family_invite.html'
 
