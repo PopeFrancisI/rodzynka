@@ -272,6 +272,13 @@ class EventUpdateView(LoginRequiredMixin, UpdateView):
         form.fields['description'].required = False
         return form
 
+    def form_valid(self, form):
+        event = self.get_object()
+        if event.creator is not self.request.user:
+            return redirect(self.get_success_url())
+        else:
+            return super().form_valid(form)
+
 
 class EventDeleteView(LoginRequiredMixin, DeleteView):
     model = Event
