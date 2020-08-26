@@ -173,8 +173,17 @@ class FamilyRequestJoinView(LoginRequiredMixin, FormView):
 
 
 class FamilyAddUserView(LoginRequiredMixin, View):
-
+    """
+    Adding user to a family by a family member.
+    """
     def get(self, request, family_slug, user_pk):
+        """
+        Renders a page where a family member can decide whether add a new user or not.
+        :param request:
+        :param family_slug:
+        :param user_pk:
+        :return:
+        """
         family = Family.objects.get(slug=family_slug)
         user = User.objects.get(id=user_pk)
         context = {'family': family, "requesting_user": user}
@@ -182,6 +191,13 @@ class FamilyAddUserView(LoginRequiredMixin, View):
         return render(request, 'family_add_user.html', context)
 
     def post(self, request, family_slug, user_pk):
+        """
+        If join request got accepted, then add new member. Otherwise remove join request.
+        :param request:
+        :param family_slug:
+        :param user_pk:
+        :return:
+        """
         family = Family.objects.get(slug=family_slug)
         requesting_user = User.objects.get(id=user_pk)
 
