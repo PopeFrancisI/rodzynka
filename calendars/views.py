@@ -8,8 +8,9 @@ from django.shortcuts import render, redirect
 from django.urls import reverse
 from django.utils import timezone
 from django.views import View
-from django.views.generic import CreateView
+from django.views.generic import CreateView, FormView, UpdateView
 
+from calendars.forms import CalendarAddUserForm
 from calendars.models import Event, Calendar, create_calendar
 from family.models import Family
 from family.views import GetUserFamilyMixin
@@ -125,6 +126,39 @@ class CalendarCreateView(LoginRequiredMixin, GetUserFamilyMixin, CreateView):
         user = self.request.user
         family = self.get_family(user, self.kwargs['family_slug'])
         create_calendar(name, family, False, (user, ))
+
+        return redirect(self.get_success_url())
+
+
+class CalendarSetUsersView(LoginRequiredMixin, GetUserFamilyMixin, FormView):
+    form_class = CalendarAddUserForm
+    template_name = 'calendar_set_users.html'
+
+    def get_success_url(self):
+        return reverse('calendar_detail', args=(self.kwargs['family_slug'], self.kwargs['calendar_pk']))
+
+    def get_form(self, form_class=None):
+        if form_class is None:
+            form_class = self.get_form_class()
+        user = self.request.user
+        family = self.get_family(user, self.kwargs['family_slug'])
+        form = form_class(user, family, **self.get_form_kwargs())
+        calendar = user.calendar_set.get(id=self.kwargs['calendar_pk'])
+        form.initial = {'users': calendar.users.all()}
+        return form
+
+    def form_valid(self, form):
+        """
+        Adds users to the calendar and redirects to calendar page.
+        :param form:
+        :return:
+        """
+        users = list(form.cleaned_data['users'])
+        users.append(self.request.user)
+
+        calendar = self.request.user.calendar_set.get(id=self.kwargs['calendar_pk'])
+        calendar.users.set(users)
+        calendar.save()
 
         return redirect(self.get_success_url())
 

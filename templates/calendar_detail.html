@@ -6,7 +6,12 @@
             <a href="{% url 'calendar_detail' family_slug=family.slug calendar_pk=calendar.id%}">{{ calendar.name }}</a>
         {% endfor %}
         <a href="{% url 'calendar_create' family_slug=family.slug %}">+ Add calendar</a>
+
     <h2>{{ current_calendar.name }}</h2>
+    {% for user in current_calendar.users.all %}
+        {{ user.username }} ({{ user.first_name }} {{ user.last_name }})
+    {% endfor %}
+    <p><a href="{% url 'calendar_set_users' family_slug=family.slug calendar_pk=current_calendar.id %}">Add/remove members</a></p>
 
 
     <form action="{% url 'calendar_detail' family_slug=family.slug calendar_pk=current_calendar.id %}" method="post">
@@ -36,19 +41,22 @@
                 <br>
                 {% for event in day.events %}
                     <p>
+                        &gt;
                         {% if event.is_important %}
                             !!!
                         {% endif %}
-                        |
+
                         {% if event.is_all_day %}
                             all day
                         {% else %}
                             {{ event.date|date:"H:i" }}
                         {% endif %}
+
                         - {{ event.title }}
+
                         {% if event.description %}
                             <br>
-                            &gt; description: {{ event.description }}
+                            <div style="font-style: italic">&nbsp; description: {{ event.description }}</div>
                         {% endif %}
                     </p>
                 {% empty %}
