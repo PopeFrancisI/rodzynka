@@ -1,0 +1,13 @@
+{% extends 'family_base.html' %}
+
+{% block family_content %}
+
+    <h2>Change event</h2>
+
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <p><input type="submit" value="Change event"></p>
+    </form>
+
+{% endblock %}

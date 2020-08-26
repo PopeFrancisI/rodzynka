@@ -20,7 +20,7 @@ from django.urls import path, re_path
 
 from Rodzynka import settings
 from calendars.views import CalendarDetailView, EventCreateView, CalendarCreateView, CalendarSetUsersView, \
-    EventDeleteView
+    EventDeleteView, EventUpdateView
 from family.views import FamilyMainView, FamilyPickView, IndexView, FamilyCreateView, FamilyInviteView, FamilyJoinView, \
     FamilyAddUserView, FamilyRequestJoinView
 from gallery.views import GalleryPickView, GalleryDetailView, GalleryMediaCreateView, GalleryMediaDeleteView, \
@@ -58,10 +58,10 @@ urlpatterns = [
             GalleryMediaDeleteView.as_view(), name='gallery_media_delete'),
 
     re_path(r'^family/(?P<family_slug>[a-z\d-]+)/wishlist/$', WishlistView.as_view(), name='wishlist'),
-    re_path(r'^family/(?P<family_slug>[a-z\d-]+)/wishlist/add$', WishCreateView.as_view(), name='wish_create'),
-    re_path(r'^family/(?P<family_slug>[a-z\d-]+)/wishlist/delete/(?P<wish_pk>[\d]+)$', WishDeleteView.as_view(),
+    re_path(r'^family/(?P<family_slug>[a-z\d-]+)/wishlist/add/$', WishCreateView.as_view(), name='wish_create'),
+    re_path(r'^family/(?P<family_slug>[a-z\d-]+)/wishlist/delete/(?P<wish_pk>[\d]+)/$', WishDeleteView.as_view(),
             name='wish_delete'),
-    re_path(r'^family/(?P<family_slug>[a-z\d-]+)/wishlist/update/(?P<wish_pk>[\d]+)$', WishUpdateView.as_view(),
+    re_path(r'^family/(?P<family_slug>[a-z\d-]+)/wishlist/update/(?P<wish_pk>[\d]+)/$', WishUpdateView.as_view(),
             name='wish_update'),
 
     re_path(r'^family/(?P<family_slug>[a-z\d-]+)/calendar/$', CalendarDetailView.as_view(), name='calendar_detail'),
@@ -71,13 +71,14 @@ urlpatterns = [
             CalendarDetailView.as_view(), name='calendar_detail'),
     re_path(r'^family/(?P<family_slug>[a-z\d-]+)/calendar/create/$',
             CalendarCreateView.as_view(), name='calendar_create'),
-    re_path(r'^family/(?P<family_slug>[a-z\d-]+)/calendar/(?P<calendar_pk>[\d]+)/user/add$',
+    re_path(r'^family/(?P<family_slug>[a-z\d-]+)/calendar/(?P<calendar_pk>[\d]+)/user/add/$',
             CalendarSetUsersView.as_view(), name='calendar_set_users'),
-    re_path(r'^family/(?P<family_slug>[a-z\d-]+)/calendar/(?P<calendar_pk>[\d]+)/event/add/'
-            r'(?P<year>[\d]{4})/(?P<month>[\d]+)/(?P<day>[\d]+)$',
+    re_path(r'^family/(?P<family_slug>[a-z\d-]+)/calendar/(?P<calendar_pk>[\d]+)/event/add/(?P<year>[\d]{4})/(?P<month>[\d]+)/(?P<day>[\d]+)/$',
             EventCreateView.as_view(), name='event_create'),
-    re_path(r'^family/(?P<family_slug>[a-z\d-]+)/calendar/(?P<calendar_pk>[\d]+)/event/delete/(?P<event_pk>[\d]+)/',
+    re_path(r'^family/(?P<family_slug>[a-z\d-]+)/calendar/(?P<calendar_pk>[\d]+)/event/delete/(?P<event_pk>[\d]+)/(?P<year>[\d]{4})/(?P<month>[\d]+)/',
             EventDeleteView.as_view(), name='event_delete'),
+    re_path(r'^family/(?P<family_slug>[a-z\d-]+)/calendar/(?P<calendar_pk>[\d]+)/event/update/(?P<event_pk>[\d]+)/(?P<year>[\d]{4})/(?P<month>[\d]+)/',
+            EventUpdateView.as_view(), name='event_update'),
 ]
 
 if settings.DEBUG:

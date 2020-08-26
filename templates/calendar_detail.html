@@ -58,7 +58,10 @@
                         {% endif %}
 
                         - {{ event.title }}
-                        <a href="{% url 'event_delete' family_slug=family.slug calendar_pk=current_calendar.pk event_pk=event.id %}">- delete</a>
+                        {% if event.creator == request.user %}
+                            <a href="{% url 'event_update' family_slug=family.slug calendar_pk=current_calendar.pk event_pk=event.id year=year month=month %}">* change</a>
+                            <a href="{% url 'event_delete' family_slug=family.slug calendar_pk=current_calendar.pk event_pk=event.id year=year month=month %}">- delete</a>
+                        {% endif %}
                         {% if event.description %}
                             <br>
                             <div style="font-style: italic">&nbsp; description: {{ event.description }}</div>

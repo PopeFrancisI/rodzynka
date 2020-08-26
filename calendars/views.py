@@ -3,12 +3,12 @@ from collections import defaultdict
 from datetime import datetime
 
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.forms import ModelForm
+from django.forms import ModelForm, Form
 from django.shortcuts import render, redirect
 from django.urls import reverse
 from django.utils import timezone
 from django.views import View
-from django.views.generic import CreateView, FormView, DeleteView
+from django.views.generic import CreateView, FormView, DeleteView, UpdateView
 
 from calendars.forms import CalendarAddUserForm
 from calendars.models import Event, Calendar, create_calendar
@@ -254,13 +254,36 @@ class EventCreateView(LoginRequiredMixin, CreateView):
         return redirect(self.get_success_url())
 
 
+class EventUpdateView(LoginRequiredMixin, UpdateView):
+    model = Event
+    fields = ['title', 'description', 'is_important']
+    template_name = 'event_update.html'
+    pk_url_kwarg = 'event_pk'
+
+    def get_success_url(self):
+        return reverse('calendar_detail',
+                       args=(self.kwargs['family_slug'],
+                             self.kwargs['calendar_pk'],
+                             self.kwargs['year'],
+                             self.kwargs['month']))
+
+    def get_form(self, form_class=None):
+        form = super().get_form(form_class)
+        form.fields['description'].required = False
+        return form
+
+
 class EventDeleteView(LoginRequiredMixin, DeleteView):
     model = Event
     template_name = 'event_delete.html'
     pk_url_kwarg = 'event_pk'
 
     def get_success_url(self):
-        return reverse('calendar_detail', args=(self.kwargs['family_slug'], self.kwargs['calendar_pk']))
+        return reverse('calendar_detail',
+                       args=(self.kwargs['family_slug'],
+                             self.kwargs['calendar_pk'],
+                             self.kwargs['year'],
+                             self.kwargs['month']))
 
     def delete(self, request, *args, **kwargs):
         event = self.get_object()
