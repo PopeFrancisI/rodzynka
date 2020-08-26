@@ -19,7 +19,7 @@ from django.contrib.auth.views import LoginView, LogoutView
 from django.urls import path, re_path
 
 from Rodzynka import settings
-from calendars.views import CalendarDetailView, EventCreateView
+from calendars.views import CalendarDetailView, EventCreateView, CalendarCreateView
 from family.views import FamilyMainView, FamilyPickView, IndexView, FamilyCreateView, FamilyInviteView, FamilyJoinView, \
     FamilyAddUserView, FamilyRequestJoinView
 from gallery.views import GalleryPickView, GalleryDetailView, GalleryMediaCreateView, GalleryMediaDeleteView, \
@@ -68,6 +68,8 @@ urlpatterns = [
             CalendarDetailView.as_view(), name='calendar_detail'),
     re_path(r'^family/(?P<family_slug>[a-z\d-]+)/calendar/(?P<calendar_pk>[\d]+)/(?P<year>[\d]{4})/(?P<month>[\d]+)/$',
             CalendarDetailView.as_view(), name='calendar_detail'),
+    re_path(r'^family/(?P<family_slug>[a-z\d-]+)/calendar/create/$',
+            CalendarCreateView.as_view(), name='calendar_create'),
     re_path(r'^family/(?P<family_slug>[a-z\d-]+)/calendar/(?P<calendar_pk>[\d]+)/event/add/'
             r'(?P<year>[\d]{4})/(?P<month>[\d]+)/(?P<day>[\d]+)$',
             EventCreateView.as_view(), name='event_create'),

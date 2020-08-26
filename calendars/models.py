@@ -13,7 +13,7 @@ class Calendar(models.Model):
 
 def create_calendar(name, family, is_main=False, users=None):
 
-    if is_main or not users:
+    if is_main:
         users = family.user.all()
 
     calendar = Calendar.objects.create(

@@ -3,7 +3,6 @@ from collections import defaultdict
 from datetime import datetime
 
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.contrib.auth.models import User
 from django.forms import ModelForm
 from django.shortcuts import render, redirect
 from django.urls import reverse
@@ -11,7 +10,8 @@ from django.utils import timezone
 from django.views import View
 from django.views.generic import CreateView
 
-from calendars.models import Event, Calendar
+from calendars.models import Event, Calendar, create_calendar
+from family.models import Family
 from family.views import GetUserFamilyMixin
 
 
@@ -112,6 +112,23 @@ class CalendarDetailView(LoginRequiredMixin, GetUserFamilyMixin, View):
         return year, month
 
 
+class CalendarCreateView(LoginRequiredMixin, GetUserFamilyMixin, CreateView):
+    model = Calendar
+    fields = ['name']
+    template_name = 'calendar_create.html'
+
+    def get_success_url(self):
+        return reverse('calendar_detail', args=(self.kwargs['family_slug'], ))
+
+    def form_valid(self, form):
+        name = form.cleaned_data.get('name')
+        user = self.request.user
+        family = self.get_family(user, self.kwargs['family_slug'])
+        create_calendar(name, family, False, (user, ))
+
+        return redirect(self.get_success_url())
+
+
 class EventCreateView(LoginRequiredMixin, CreateView):
     model = Event
     fields = ['title', 'description', 'is_important']
@@ -126,7 +143,6 @@ class EventCreateView(LoginRequiredMixin, CreateView):
 
     def get_form(self, form_class=None):
         form = super().get_form(form_class)
-        form: ModelForm
         form.fields['description'].required = False
         return form
 

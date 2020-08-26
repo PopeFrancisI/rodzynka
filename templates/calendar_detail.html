@@ -1,8 +1,13 @@
 {% extends 'family_base.html' %}
 
 {% block family_content %}
-
+    <h3>Your calendars</h3>
+        {% for calendar in user_calendars %}
+            <a href="{% url 'calendar_detail' family_slug=family.slug calendar_pk=calendar.id%}">{{ calendar.name }}</a>
+        {% endfor %}
+        <a href="{% url 'calendar_create' family_slug=family.slug %}">+ Add calendar</a>
     <h2>{{ current_calendar.name }}</h2>
+
 
     <form action="{% url 'calendar_detail' family_slug=family.slug calendar_pk=current_calendar.id %}" method="post">
         {% csrf_token %}
@@ -11,14 +16,13 @@
 
         <label for="month">Month:</label>
         <select name="month" id="month">
-        {% for month_number, month_name in months_all.items %}
-            <option value="{{ month_number }}"
-                    {% if month_number == month %}
-                        selected
-                    {% endif %}
-            >{{ month_name }}</option>
-        {% endfor %}
-
+            {% for month_number, month_name in months_all.items %}
+                <option value="{{ month_number }}"
+                        {% if month_number == month %}
+                            selected
+                        {% endif %}
+                >{{ month_name }}</option>
+            {% endfor %}
         </select>
         <input type="submit" value="Go to selected date">
     </form>
@@ -43,7 +47,8 @@
                         {% endif %}
                         - {{ event.title }}
                         {% if event.description %}
-                            {{ event.description }}
+                            <br>
+                            &gt; description: {{ event.description }}
                         {% endif %}
                     </p>
                 {% empty %}
