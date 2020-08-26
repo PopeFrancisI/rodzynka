@@ -26,24 +26,26 @@
 
     <ul>
         {% for day in day_data %}
-            <li>
+            <li {% if day.day_number|divisibleby:2 %} style="background: papayawhip" {% endif %} >
                 <b>{{ day.day_number }} - {{ day.day_of_week }}</b>
                 <a href="{% url 'event_create' family_slug=family.slug calendar_pk=current_calendar.id year=year month=month day=day.day_number %}">+ New event</a>
                 <br>
                 {% for event in day.events %}
-                    {% if event.is_important %}
-                        !!! 
-                    {% endif %}
-                    |
-                    {% if event.is_all_day %}
-                        all day
-                    {% else %}
-                        {{ event.date|date:"H:i" }}
-                    {% endif %}
-                    - {{ event.title }}
-                    {% if event.description %}
-                        <p>{{ event.description }}</p>
-                    {% endif %}
+                    <p>
+                        {% if event.is_important %}
+                            !!!
+                        {% endif %}
+                        |
+                        {% if event.is_all_day %}
+                            all day
+                        {% else %}
+                            {{ event.date|date:"H:i" }}
+                        {% endif %}
+                        - {{ event.title }}
+                        {% if event.description %}
+                            {{ event.description }}
+                        {% endif %}
+                    </p>
                 {% empty %}
                 {% endfor %}
 
