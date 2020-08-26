@@ -43,6 +43,10 @@ months_dict = {
 
 
 class Day:
+    """
+    Container class for day data. Instance of this class holds data about
+    day number, day of the week name and all events having place that day.
+    """
     def __init__(self, day_number, day_of_week, events):
         self.day_number = day_number
         self.day_of_week = day_of_week
@@ -50,9 +54,19 @@ class Day:
 
 
 class CalendarDetailView(LoginRequiredMixin, GetUserFamilyMixin, View):
-
+    """
+    Shows a calendar with its events.
+    """
     def get(self, request, family_slug, calendar_pk=None, year=None, month=None):
-
+        """
+        Renders calendar details page.
+        :param request:
+        :param family_slug:
+        :param calendar_pk:
+        :param year:
+        :param month:
+        :return:
+        """
         family = self.get_family(request.user, family_slug)
         user_calendars = request.user.calendar_set.filter(family=family)
 
@@ -93,6 +107,15 @@ class CalendarDetailView(LoginRequiredMixin, GetUserFamilyMixin, View):
         return render(request, 'calendar_detail.html', context)
 
     def post(self, request, family_slug, calendar_pk=None, year=None, month=None):
+        """
+        Redirects to calendar for provided year and month. Used by date selection on page.
+        :param request:
+        :param family_slug:
+        :param calendar_pk:
+        :param year:
+        :param month:
+        :return:
+        """
         year = request.POST.get('year')
         month = request.POST.get('month')
         if year and month:
