@@ -28,20 +28,11 @@ def create_calendar(name, family, is_main=False, users=None):
     return calendar
 
 
-class EventDateTimeField(models.DateTimeField):
-
-    def value_to_string(self, obj):
-        val = self.value_from_object(obj)
-        if val:
-            val.replace(microsecond=0)
-            return val.isoformat()
-        return ''
-
-
 class Event(models.Model):
     title = models.CharField(max_length=128)
     description = models.TextField(default='')
     date = models.DateTimeField()
-    is_important = models.BooleanField(default=False)
+    is_all_day = models.BooleanField(default=True)
+    is_important = models.BooleanField(default=False, verbose_name='Important')
     creator = models.ForeignKey(User, on_delete=models.CASCADE)
     calendar = models.ForeignKey(Calendar, on_delete=models.CASCADE)

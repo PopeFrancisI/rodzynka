@@ -34,7 +34,16 @@
                     {% if event.is_important %}
                         !!! 
                     {% endif %}
-                    | {{ event.date|date:"H:i" }} - {{ event.title }}: {{ event.description }}
+                    |
+                    {% if event.is_all_day %}
+                        all day
+                    {% else %}
+                        {{ event.date|date:"H:i" }}
+                    {% endif %}
+                    - {{ event.title }}
+                    {% if event.description %}
+                        <p>{{ event.description }}</p>
+                    {% endif %}
                 {% empty %}
                 {% endfor %}
 

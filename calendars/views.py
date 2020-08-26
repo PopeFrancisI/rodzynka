@@ -126,6 +126,7 @@ class EventCreateView(LoginRequiredMixin, CreateView):
 
     def get_form(self, form_class=None):
         form = super().get_form(form_class)
+        form: ModelForm
         form.fields['description'].required = False
         return form
 
@@ -141,9 +142,11 @@ class EventCreateView(LoginRequiredMixin, CreateView):
             split_time = time.split(':')
             hour = int(split_time[0])
             minute = int(split_time[1])
+            is_all_day = False
         else:
             hour = 0
             minute = 0
+            is_all_day = True
 
         year = int(self.kwargs['year'])
         month = int(self.kwargs['month'])
@@ -164,6 +167,7 @@ class EventCreateView(LoginRequiredMixin, CreateView):
             title=title,
             description=description,
             is_important=is_important,
+            is_all_day=is_all_day,
             date=date,
             creator=creator,
             calendar=calendar
