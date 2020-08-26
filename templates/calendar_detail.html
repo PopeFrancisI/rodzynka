@@ -8,9 +8,12 @@
         <a href="{% url 'calendar_create' family_slug=family.slug %}">+ Add calendar</a>
 
     <h2>{{ current_calendar.name }}</h2>
-    {% for user in current_calendar.users.all %}
-        {{ user.username }} ({{ user.first_name }} {{ user.last_name }})
-    {% endfor %}
+    <p>
+        Members:
+        {% for user in current_calendar.users.all %}
+            {{ user.username }} ({{ user.first_name }} {{ user.last_name }})
+        {% endfor %}
+    </p>
 
     {% if not current_calendar.is_main %}
         <p><a href="{% url 'calendar_set_users' family_slug=family.slug calendar_pk=current_calendar.id %}">Add/remove members</a></p>
@@ -55,11 +58,12 @@
                         {% endif %}
 
                         - {{ event.title }}
-
+                        <a href="{% url 'event_delete' family_slug=family.slug calendar_pk=current_calendar.pk event_pk=event.id %}">- delete</a>
                         {% if event.description %}
                             <br>
                             <div style="font-style: italic">&nbsp; description: {{ event.description }}</div>
                         {% endif %}
+                        <p>&nbsp; added by: {{ event.creator.username }}</p>
                     </p>
                 {% empty %}
                 {% endfor %}

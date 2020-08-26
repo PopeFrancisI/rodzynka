@@ -8,11 +8,10 @@ from django.shortcuts import render, redirect
 from django.urls import reverse
 from django.utils import timezone
 from django.views import View
-from django.views.generic import CreateView, FormView, UpdateView
+from django.views.generic import CreateView, FormView, DeleteView
 
 from calendars.forms import CalendarAddUserForm
 from calendars.models import Event, Calendar, create_calendar
-from family.models import Family
 from family.views import GetUserFamilyMixin
 
 
@@ -253,3 +252,19 @@ class EventCreateView(LoginRequiredMixin, CreateView):
         event.save()
 
         return redirect(self.get_success_url())
+
+
+class EventDeleteView(LoginRequiredMixin, DeleteView):
+    model = Event
+    template_name = 'event_delete.html'
+    pk_url_kwarg = 'event_pk'
+
+    def get_success_url(self):
+        return reverse('calendar_detail', args=(self.kwargs['family_slug'], self.kwargs['calendar_pk']))
+
+    def delete(self, request, *args, **kwargs):
+        event = self.get_object()
+        if event.creator is not request.user:
+            return redirect(self.get_success_url())
+        else:
+            return super(EventDeleteView, self).delete(request, *args, **kwargs)

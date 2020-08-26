@@ -58,7 +58,7 @@ class GalleryCreateView(LoginRequiredMixin, CreateView):
 
 class GalleryDeleteView(LoginRequiredMixin, DeleteView):
     model = Gallery
-    template_name = 'gallery_delete_view.html'
+    template_name = 'gallery_delete.html'
     pk_url_kwarg = 'gallery_pk'
 
     def get_success_url(self):
