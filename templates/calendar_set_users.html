@@ -2,6 +2,7 @@
 
 {% block family_content %}
 
+    <h2>Choose who can access this calendar</h2>
     <form method="post">
         {% csrf_token %}
         {{ form.as_p }}

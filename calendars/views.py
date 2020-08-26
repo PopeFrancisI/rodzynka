@@ -153,11 +153,15 @@ class CalendarSetUsersView(LoginRequiredMixin, GetUserFamilyMixin, FormView):
         :param form:
         :return:
         """
+        calendar = self.request.user.calendar_set.get(id=self.kwargs['calendar_pk'])
+
+        if calendar.is_main:
+            return redirect(self.get_success_url())
+
         users = list(form.cleaned_data['users'])
         users.append(self.request.user)
-
-        calendar = self.request.user.calendar_set.get(id=self.kwargs['calendar_pk'])
         calendar.users.set(users)
+
         calendar.save()
 
         return redirect(self.get_success_url())
