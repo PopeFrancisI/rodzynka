@@ -23,7 +23,7 @@ def create_calendar(name, family, is_main=False, users=None):
     )
     calendar.users.set(users)
 
-    calendar = calendar.save()
+    calendar.save()
 
     return calendar
 
