@@ -81,6 +81,26 @@ def test_get_family_gallery_pick(client, set_up):
 
 
 @pytest.mark.django_db
+def test_add_gallery(client, set_up):
+    test_get_family_main(client, set_up)
+    family = Family.objects.get(slug='kowalski')
+    number_of_galleries_before = Gallery.objects.filter(family=family).count()
+    response = client.get(reverse('gallery_create', args=('kowalski', )), follow=True)
+    assert response.status_code == 200
+
+    response = client.post(reverse('gallery_create', args=('kowalski', )),
+                           {
+                                'name': 'new_gallery'
+                           },
+                           follow=True)
+    assert response.status_code == 200
+
+    assert Gallery.objects.filter(family=family).count() == number_of_galleries_before + 1
+
+    assert Gallery.objects.get(family=family, name='new_gallery')
+
+
+@pytest.mark.django_db
 def test_get_family_gallery_main(client, set_up):
     test_get_family_main(client, set_up)
 
