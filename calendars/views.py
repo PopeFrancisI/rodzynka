@@ -93,7 +93,7 @@ class CalendarDetailView(LoginRequiredMixin, GetUserFamilyMixin, View):
             days_list.append(day_obj)
             day_of_week += 1
             if day_of_week > 6:
-                day_of_week = 1
+                day_of_week = 0
 
         context = {'family': family,
                    'current_calendar': current_calendar,
@@ -294,7 +294,7 @@ class EventDeleteView(LoginRequiredMixin, DeleteView):
 
     def delete(self, request, *args, **kwargs):
         event = self.get_object()
-        if event.creator is not request.user:
+        if event.creator != request.user:
             return redirect(self.get_success_url())
         else:
             return super(EventDeleteView, self).delete(request, *args, **kwargs)
