@@ -1,15 +1,38 @@
 {% extends 'base.html' %}
+{% load static %}
 
 {% block content %}
+    <div class="jumbotron jumbotron-fluid text-center">
+        <h1 class="display-4">
+            Rodzynka
+        </h1>
+        <p>
 
-    <h1 align="center">Rodzynka</h1>
-    <hr>
+        </p>
+    </div>
 
-    <form action="{% url 'signup' %}">
-        <button type="submit">Join</button>
-    </form>
-    <form action="{% url 'family_pick' %}">
-        <button type="submit">Log in</button>
-    </form>
+    <div class="container my-5">
+        <div class="row align-items-center">
+            <div class="col">
+                <img src="{% static "default_covers/default_cover.jpg" %}">
+            </div>
+
+            <div class="col">
+                <div class="row justify-content-center my-3">
+                    <form action="{% url 'signup' %}">
+                        <button class="btn btn-primary" type="submit">Join</button>
+                    </form>
+                </div>
+
+                <div class="row justify-content-center my-3">
+                    <form action="{% url 'family_pick' %}">
+                        <button class="btn btn-primary" type="submit">Log in</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
 
 {% endblock %}
