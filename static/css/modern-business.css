@@ -5,6 +5,22 @@
  */
 body {
   /*padding-top: 56px;*/
+
+  /*background: #6f42c1;*/
+}
+
+.jumbotron {
+  background-image: url("../images/index_background.jpg");
+  background-size: cover;
+}
+
+.jumbotron h1 {
+  background: white;
+}
+
+footer {
+  background-image: url("../images/index_background.jpg");
+  background-size: cover;
 }
 
 .carousel-item {
