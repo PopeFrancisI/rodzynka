@@ -9,7 +9,7 @@
     {% for gallery, media in galleries %}
         {% load static %}
         {% if not media.image.url %}
-            <img src="{% static 'default_covers/default_cover.jpg' %}" alt="gallery cover" width="200px" height="200px">
+            <img src="{% static 'images/default_covers/default_cover.jpg' %}" alt="gallery cover" width="200px" height="200px">
         {% else %}
             <img src="{{ media.image.url }}" alt="{{ gallery.name }}" width="200px" height="200px"/>
         {% endif %}
