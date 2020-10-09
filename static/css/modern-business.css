@@ -3,24 +3,30 @@
  * Copyright 2013-2020 Start Bootstrap
  * Licensed under MIT (https://github.com/StartBootstrap/startbootstrap-logomodern-business-nav/blob/master/LICENSE)
  */
-body {
-  /*padding-top: 56px;*/
 
-  /*background: #6f42c1;*/
+body {
+  background-image: url("../images/index_background.jpg");
+  background-size: cover;
 }
 
 .jumbotron {
-  background-image: url("../images/index_background.jpg");
-  background-size: cover;
+  background: #FFC603;
 }
 
 .jumbotron h1 {
-  background: white;
+  color: black;
 }
 
+.btn {
+  background: #FFC603;
+  border-color: #FFC603;
+  font-size: xx-large;
+  color: black;
+}
+
+
 footer {
-  background-image: url("../images/index_background.jpg");
-  background-size: cover;
+  background: #00FFCE;
 }
 
 .carousel-item {

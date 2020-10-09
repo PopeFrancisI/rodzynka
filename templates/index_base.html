@@ -2,37 +2,25 @@
 {% load static %}
 
 {% block content %}
+
     <div class="jumbotron jumbotron-fluid text-center">
         <h1 class="display-4">
             Rodzynka
         </h1>
-        <p>
-
-        </p>
     </div>
 
-    <div class="container my-5">
-        <div class="row align-items-center">
-            <div class="col">
-{#                <img src="{% static "images/index_background.jpg" %}" st>#}
-            </div>
+    <div class="my-5" style="display: flex; flex-direction: column">
+        <div class="row justify-content-center my-3">
+            <form action="{% url 'signup' %}">
+                <button class="btn btn-primary" type="submit">Join</button>
+            </form>
+        </div>
 
-            <div class="col">
-                <div class="row justify-content-center my-3">
-                    <form action="{% url 'signup' %}">
-                        <button class="btn btn-primary" type="submit">Join</button>
-                    </form>
-                </div>
-
-                <div class="row justify-content-center my-3">
-                    <form action="{% url 'family_pick' %}">
-                        <button class="btn btn-primary" type="submit">Log in</button>
-                    </form>
-                </div>
-            </div>
+        <div class="row justify-content-center my-3">
+            <form action="{% url 'family_pick' %}">
+                <button class="btn btn-primary" type="submit">Log in</button>
+            </form>
         </div>
     </div>
-
-
 
 {% endblock %}
