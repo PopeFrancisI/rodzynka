@@ -1,14 +1,15 @@
-{% extends 'base.html' %}
+{% extends 'index_base.html' %}
 
 {% block content %}
 
-    <h1>Rodzynka</h1>
-    <h2>Log in</h2>
+    <div class="container">
+        <h2>Log in</h2>
 
-    <form method="post">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <input type="submit" value="Log in">
-    </form>
+        <form method="post">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <input class="btn" type="submit" value="Log in">
+        </form>
+    </div>
 
 {% endblock %}

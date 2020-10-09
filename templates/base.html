@@ -16,10 +16,11 @@
 
 <body class="d-flex flex-column min-vh-100 ">
     <div class="flex-grow-1">
-        <div id="content">
-            {% block content %}
-            {% endblock %}
-        </div>
+        {% block jumbotron %}
+        {% endblock %}
+
+        {% block content %}
+        {% endblock %}
     </div>
 
     <footer>

@@ -1,7 +1,8 @@
 {% extends 'base.html' %}
 {% load static %}
 
-{% block content %}
+
+{% block jumbotron %}
 
     <div class="jumbotron jumbotron-fluid text-center">
         <h1 class="display-4">
@@ -9,14 +10,19 @@
         </h1>
     </div>
 
-    <div class="my-5" style="display: flex; flex-direction: column">
-        <div class="row justify-content-center my-3">
+{% endblock %}
+
+
+{% block content %}
+    <div class="vertical-center"></div>
+    <div class="container my-5 vertical-center">
+        <div class=" my-3">
             <form action="{% url 'signup' %}">
                 <button class="btn btn-primary" type="submit">Join</button>
             </form>
         </div>
 
-        <div class="row justify-content-center my-3">
+        <div class=" my-3">
             <form action="{% url 'family_pick' %}">
                 <button class="btn btn-primary" type="submit">Log in</button>
             </form>
