@@ -14,13 +14,15 @@
     <script type="text/javascript" src="{% static "vendor/bootstrap/js/bootstrap.bundle.js" %}"></script>
 </head>
 
-<body class="d-flex flex-column min-vh-100 ">
+<body class="d-flex flex-column min-vh-100">
     <div class="flex-grow-1">
         {% block jumbotron %}
         {% endblock %}
 
-        {% block content %}
-        {% endblock %}
+        <div class="py-5">
+            {% block content %}
+            {% endblock %}
+        </div>
     </div>
 
     <footer>

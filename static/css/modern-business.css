@@ -24,6 +24,12 @@ body {
   color: black;
 }
 
+.box {
+  background: white;
+  max-width: 50%;
+  border-radius: 5px;
+}
+
 .vertical-center {
   display: flex;
   flex-direction: column;
@@ -32,7 +38,7 @@ body {
 }
 
 footer {
-  background: #00FFCE;
+  background: white;
 }
 
 .carousel-item {
