@@ -1,11 +1,16 @@
-{% extends 'base.html' %}
+{% extends 'index_base.html' %}
 
 {% block content %}
 
-    <form action='' method="post">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <input type="submit" value="Sign up">
-    </form>
+    <div class="container vertical-center box py-5">
+        <h1>Sign Up</h1>
+        <form method="post">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <div class="vertical-center">
+                <input class="btn" type="submit" value="Sign up">
+            </div>
+        </form>
+    </div>
 
 {% endblock %}
