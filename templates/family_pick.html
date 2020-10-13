@@ -1,12 +1,10 @@
-{% extends 'base.html' %}
-{% block content %}
-
-    {% include 'navbar.html' %}
+{% extends 'family_base.html' %}
+{% block family_content %}
 
     <div class="container">
         <div class="container box py-5 my-5">
             <div class="container vertical-center">
-                <h2>Choose a family</h2>
+                <h1>Choose a family</h1>
                 {% for family in user_families %}
                     <a class="btn m-3" href="{% url 'family_main' family_slug=family.slug %}">{{ family.name }} ({{ family.last_name }})</a>
                     <br>
@@ -24,7 +22,7 @@
         </div>
 
         <div class="container box py-5 my-5 vertical-center">
-            <h2>Family invitations</h2>
+            <h1>Family invitations</h1>
             {% for family in inviting_families %}
                 <a class="btn btn-join m-3" href="{% url 'family_join' family_slug=family.slug %}">! {{ family.name }} ({{ family.last_name }})</a>
             {% empty %}

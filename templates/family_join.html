@@ -1,11 +1,13 @@
-{% extends 'base.html' %}
+{% extends 'family_base.html' %}
 
-{% block content %}
-    <h2>Do you accept an invitation to the {{ family.name }} family?</h2>
-    <form method="post">
-        {% csrf_token %}
-        <input type="submit" name="accept" value="Accept">
-        <input type="submit" name="reject" value="Reject">
-    </form>
+{% block family_content %}
+    <div class="container box vertical-center py-5">
+        <h1>Do you accept an invitation to the {{ family.name }} family?</h1>
+        <form method="post">
+            {% csrf_token %}
+            <input type="submit" name="accept" value="Accept">
+            <input type="submit" name="reject" value="Reject">
+        </form>
+    </div>
 
 {% endblock %}

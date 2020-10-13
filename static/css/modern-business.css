@@ -58,9 +58,24 @@ hr {
   border-color: #278bd3;
 }
 
+.btn-small {
+  font-size: large;
+  color: black;
+}
+
 .box {
   background: white;
   max-width: 50%;
+  border-radius: 5px;
+}
+
+.bg-white {
+  background: white;
+  border-radius: 5px;
+}
+
+.bg-yellow {
+  background: #FFC603;
   border-radius: 5px;
 }
 
@@ -70,6 +85,8 @@ hr {
 
 .navbar-light {
   background-color: #FFC603;
+  border-bottom: #b88200;
+  border-bottom-style: solid;
 }
 
 .navbar-brand {
@@ -82,6 +99,15 @@ hr {
   flex-direction: column;
   align-items: center;
   justify-content: center;
+}
+
+.family-member {
+  background: #fd7e14;
+  color: white;
+  margin: 5px;
+  padding: 5px;
+  border-radius: 3px;
+  display: inline;
 }
 
 footer {

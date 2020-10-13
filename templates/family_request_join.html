@@ -1,18 +1,18 @@
-{% extends 'base.html' %}
-{% block content %}
+{% extends 'family_base.html' %}
 
-    {% if request.user.family_set.first %}
-        {% include 'family_header.html' %}
-    {% else %}
-        {% include 'navbar.html' %}
-    {% endif %}
+{% block family_content %}
 
-    <h2>Join a family</h2>
+    <div class="container box vertical-center py-5 my-3">
+        <div class="container vertical-center">
+            <h1>Join a family</h1>
 
-    <form method="post">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <input type="submit" value="Send join request">
-    </form>
+            <form class="vertical-center" method="post">
+                {% csrf_token %}
+                {{ form.as_p }}
+                <input class="btn m-3" type="submit" value="Send join request">
+            </form>
+        </div>
+    </div>
+
 
 {% endblock %}
