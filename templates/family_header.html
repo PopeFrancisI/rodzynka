@@ -1,4 +1,4 @@
-{% extends 'header_base.html' %}
+{% extends 'navbar.html' %}
 
 {% block header_content %}
 
@@ -6,14 +6,10 @@
         <a href="{% url 'family_main' family_slug=family.slug %}">{{ family.name }} ({{ family.last_name }})</a>
     {% endfor %}
 
-    <a href="{% url 'family_create' %}">New family</a>
-
-    <a href="{% url 'family_request_join' %}">Join family</a>
-
-    <a href="{% url 'calendar_detail' family_slug=current_family.slug %}">Calendar</a>
-
-    <a href="{% url 'gallery_pick' family_slug=current_family.slug %}">Gallery</a>
-
-    <a href="{% url 'wishlist' family_slug=current_family.slug %}">Wishlist</a>
+    <a class="nav-link" href="{% url 'family_create' %}">New family</a>
+    <a class="nav-link" href="{% url 'family_request_join' %}">Join family</a>
+    <a class="nav-link" href="{% url 'calendar_detail' family_slug=current_family.slug %}">Calendar</a>
+    <a class="nav-link" href="{% url 'gallery_pick' family_slug=current_family.slug %}">Gallery</a>
+    <a class="nav-link" href="{% url 'wishlist' family_slug=current_family.slug %}">Wishlist</a>
 
 {% endblock %}

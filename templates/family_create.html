@@ -4,7 +4,7 @@
     {% if request.user.family_set.first %}
         {% include 'family_header.html' %}
     {% else %}
-        {% include 'header_base.html' %}
+        {% include 'navbar.html' %}
     {% endif %}
 
     <h2>Family creation</h2>

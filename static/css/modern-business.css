@@ -7,6 +7,11 @@
 body {
   background-image: url("../images/index_background.jpg");
   background-size: cover;
+  padding-top: 50px;
+}
+
+hr {
+  border: 1px dashed rgba(0,0,0,0.2);
 }
 
 .jumbotron {
@@ -24,6 +29,35 @@ body {
   color: black;
 }
 
+.btn:hover {
+  background: #fd7e14;
+  border-color: #fd7e14;
+}
+
+.btn-add {
+  background: #41d321;
+  border-color: #41d321;
+  font-size: xx-large;
+  color: black;
+}
+
+.btn-add:hover {
+  background: #3aad1e;
+  border-color: #3aad1e;
+}
+
+.btn-join {
+  background: #21c4d3;
+  border-color: #21c4d3;
+  font-size: xx-large;
+  color: black;
+}
+
+.btn-join:hover {
+  background: #278bd3;
+  border-color: #278bd3;
+}
+
 .box {
   background: white;
   max-width: 50%;
@@ -34,8 +68,13 @@ body {
   color: gray;
 }
 
-label {
+.navbar-light {
+  background-color: #FFC603;
+}
 
+.navbar-brand {
+  color: black;
+  font-size: xx-large;
 }
 
 .vertical-center {

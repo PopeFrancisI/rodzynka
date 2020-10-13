@@ -1,27 +1,38 @@
 {% extends 'base.html' %}
 {% block content %}
 
-    {% include 'header_base.html' %}
+    {% include 'navbar.html' %}
 
-    <h2>Choose a family</h2>
-    {% for family in user_families %}
-        <a href="{% url 'family_main' family_slug=family.slug %}">{{ family.name }} ({{ family.last_name }})</a>
-        <br>
-    {% empty %}
-        <div>You don't belong to any family! You can create a new family or join existing family below:</div>
-    {% endfor %}
+    <div class="container">
+        <div class="container box py-5 my-5">
+            <div class="container vertical-center">
+                <h2>Choose a family</h2>
+                {% for family in user_families %}
+                    <a class="btn m-3" href="{% url 'family_main' family_slug=family.slug %}">{{ family.name }} ({{ family.last_name }})</a>
+                    <br>
+                {% empty %}
+                    <div>You don't belong to any family!<br>You can create a new family or join existing family below:</div>
+                {% endfor %}
+            </div>
 
-    <a href="{% url 'family_create' %}">+ Create a new family</a>
-    <a href="{% url 'family_request_join' %}">* Join existing family</a>
-    <br>
+            <hr>
 
-    <h2>Invitations</h2>
-    {% for family in inviting_families %}
-        <a href="{% url 'family_join' family_slug=family.slug %}">You got invited to {{ family.name }} family!</a>
-    {% empty %}
-        <div>
-            You don't have any family invitations right now.
+            <div class="container vertical-center">
+                <a class="btn btn-add m-3" href="{% url 'family_create' %}">+ Create a family</a>
+                <a class="btn btn-join m-3" href="{% url 'family_request_join' %}">& Join a family</a>
+            </div>
         </div>
-    {% endfor %}
+
+        <div class="container box py-5 my-5 vertical-center">
+            <h2>Family invitations</h2>
+            {% for family in inviting_families %}
+                <a class="btn btn-join m-3" href="{% url 'family_join' family_slug=family.slug %}">! {{ family.name }} ({{ family.last_name }})</a>
+            {% empty %}
+                <div>
+                    You don't have any family invitations right now.
+                </div>
+            {% endfor %}
+        </div>
+    </div>
 
 {% endblock %}

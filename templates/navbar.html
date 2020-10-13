@@ -1,0 +1,44 @@
+{% block navbar %}
+
+    <nav class="navbar navbar-light fixed-top navbar-expand-lg fixed-top">
+        <div class="container">
+            <a class="navbar-brand" href="{% url 'index' %}">Rodzynka</a>
+
+            <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="navbarResponsive">
+                <ul class="navbar-nav ml-auto">
+                    {% if current_family %}
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownFamily" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                              Family
+                            </a>
+                            <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownFamily">
+                                {% for family in user_families %}
+                                    <a class="dropdown-item" href="{% url 'family_main' family_slug=family.slug %}">{{ family.name }} ({{ family.last_name }})</a>
+                                {% endfor %}
+                                <a class="dropdown-item" href="{% url 'family_create' %}">New family</a>
+                                <a class="dropdown-item" href="{% url 'family_request_join' %}">Join family</a>
+                            </div>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'calendar_detail' family_slug=current_family.slug %}">Calendar</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'gallery_pick' family_slug=current_family.slug %}">Gallery</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'wishlist' family_slug=current_family.slug %}">Wishlist</a>
+                        </li>
+                    {% endif %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'logout' %}">Log out</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+{% endblock %}
