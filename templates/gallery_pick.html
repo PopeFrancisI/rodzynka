@@ -1,22 +1,37 @@
 {% extends 'family_main.html' %}
 
 {% block family_content %}
+{% load static %}
 
-    <h2>{{ family.name }} family galleries</h2>
+    <div class="container bg-yellow p-3">
+        <div class="bg-white p-3 mb-3">
+            <h1>{{ family.name }} family galleries <a class="btn btn-small" href="{% url 'gallery_create' family_slug=family.slug %}">+ New gallery</a></h1>
+        </div>
 
-    <a href="{% url 'gallery_create' family_slug=family.slug %}">+ Add gallery</a>
-    <hr>
-    {% for gallery, media in galleries %}
-        {% load static %}
-        {% if not media.image.url %}
-            <img src="{% static 'images/default_covers/default_cover.jpg' %}" alt="gallery cover" width="200px" height="200px">
-        {% else %}
-            <img src="{{ media.image.url }}" alt="{{ gallery.name }}" width="200px" height="200px"/>
-        {% endif %}
-        <a href="{% url 'gallery_detail' family_slug=family.slug gallery_pk=gallery.id %}">{{ gallery.name }}</a>
-        {% if not gallery.is_main %}
-        <a href="{% url 'gallery_delete' family_slug=family.slug gallery_pk=gallery.id %}">[x]</a>
-        {% endif %}
-    {% endfor%}
+        <div class="row align-items-center">
+            {% for gallery, media in galleries %}
+                <div class="col-md-4 mb-4">
+                    <div class="card h-100 text-center">
+
+                        <a href="{% url 'gallery_detail' family_slug=family.slug gallery_pk=gallery.id %}">
+                            {% if not media.image.url %}
+                                <img class="img-thumbnail" src="{% static 'images/default_covers/default_cover.jpg' %}" alt="gallery cover">
+                            {% else %}
+                                <img class="img-thumbnail" src="{{ media.image.url }}" alt="{{ gallery.name }}"/>
+                            {% endif %}
+                        </a>
+
+                        <a class="btn btn-small m-1" href="{% url 'gallery_detail' family_slug=family.slug gallery_pk=gallery.id %}">{{ gallery.name }}</a>
+                        {% if not gallery.is_main %}
+                            <a class="btn btn-delete btn-small m-1" href="{% url 'gallery_delete' family_slug=family.slug gallery_pk=gallery.id %}">-</a>
+                        {% endif %}
+
+                    </div>
+                </div>
+            {% endfor%}
+        </div>
+    </div>
+
+
 
 {% endblock %}

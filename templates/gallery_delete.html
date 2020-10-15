@@ -2,10 +2,15 @@
 
 {% block family_content %}
 
-    <form method="post">
-        {% csrf_token %}
-        <p>Are you sure you want to delete "{{ object }}" gallery?</p>
-        <input type="submit" value="Confirm">
-    </form>
+    <div class="container bg-white p-3 vertical-center">
+        <form class="vertical-center" method="post">
+            {% csrf_token %}
+            <h1>Are you sure you want to delete the "{{ object }}" gallery?</h1>
+            <div class="text-center m-3">
+                <input class="btn btn-delete" type="submit" value="Delete">
+                <a class="btn" href="{% url 'gallery_pick' family_slug=current_family.slug %}">No, take me back to the Gallery</a>
+            </div>
+        </form>
+    </div>
 
 {% endblock %}

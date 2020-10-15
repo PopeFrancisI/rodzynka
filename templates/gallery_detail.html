@@ -2,33 +2,29 @@
 
 {% block family_content %}
 
-    <form action="{% url 'gallery_media_add' family_slug=family.slug gallery_pk=gallery.id%}">
-        <input type="submit" value="Add new image">
-    </form>
+    <div class="container bg-yellow p-3">
 
-    <hr>
+        <div class="bg-white p-3 mb-3">
+            <h1>
+                {{ gallery.name }} <a class="btn btn-small" href="{% url 'gallery_media_add' family_slug=family.slug gallery_pk=gallery.id%}">+ New image</a>
+            </h1>
+        </div>
 
-    {% for media in page_obj %}
-        <img src="{{ media.image.url }}" alt="{{ media.title }}" height="400px" width="400px">
-        <a href="{% url 'gallery_media_delete' family_slug=family.slug gallery_pk=gallery.pk media_pk=media.pk %}">[x]</a>
-    {% endfor %}
+        {% include 'gallery_detail_pagination.html' %}
 
-    <div class="pagination" align="center">
-        <span class="step-links">
-            {% if page_obj.has_previous %}
-                <a href="?page=1">&laquo; first</a>
-                <a href="?page={{ page_obj.previous_page_number }}">previous</a>
-            {% endif %}
+        <div class="row align-items-center">
+            {% for media in page_obj %}
+                <div class="col-md-4 mb-4">
+                    <div class="card h-100 text-center">
+                        <a href="{{ media.image.url }}"><img class="img-thumbnail" src="{{ media.image.url }}" alt="{{ media.title }}"></a>
+                        <a class="btn btn-delete btn-small m-1" href="{% url 'gallery_media_delete' family_slug=family.slug gallery_pk=gallery.pk media_pk=media.pk %}">-</a>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
 
-            <span class="current">
-                Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}
-            </span>
+        {% include 'gallery_detail_pagination.html' %}
 
-            {% if page_obj.has_next %}
-                <a href="?page={{ page_obj.next_page_number }}">next</a>
-                <a href="?page={{ page_obj.paginator.num_pages }}">last &raquo;</a>
-            {% endif %}
-        </span>
     </div>
 
 {% endblock %}

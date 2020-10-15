@@ -2,7 +2,11 @@
 
     <nav class="navbar navbar-light fixed-top navbar-expand-lg fixed-top">
         <div class="container">
-            <a class="navbar-brand" href="{% url 'index' %}">Rodzynka</a>
+            {% if current_family %}
+                <a class="navbar-brand" href="{% url 'family_main' family_slug=current_family.slug %}">Rodzynka</a>
+            {% else %}
+                <a class="navbar-brand" href="{% url 'index' %}">Rodzynka</a>
+            {% endif %}
 
             <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>

@@ -58,8 +58,25 @@ hr {
   border-color: #278bd3;
 }
 
+.btn-delete {
+  background: #ff2a52;
+  border-color: #ff2a52;
+  font-size: xx-large;
+  color: black;
+}
+
+.btn-delete:hover {
+  background: #c4266d;
+  border-color: #c4266d;
+}
+
 .btn-small {
   font-size: large;
+  color: black;
+}
+
+.btn-x-small {
+  font-size: small;
   color: black;
 }
 

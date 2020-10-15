@@ -1,11 +1,14 @@
 {% extends 'family_base.html' %}
 
 {% block family_content %}
-    <h2>Invite a new member</h2>
-    <form method="post">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <input type="submit" value="Send invite">
-    </form>
+
+    <div class="container box py-3 my-3 vertical-center">
+        <h1>Invite a new member</h1>
+        <form class="vertical-center" method="post">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <input class="btn" type="submit" value="Send invite">
+        </form>
+    </div>
 
 {% endblock %}

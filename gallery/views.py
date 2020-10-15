@@ -104,7 +104,7 @@ class GalleryDetailView(LoginRequiredMixin, GetUserFamilyMixin, View):
         gallery = Gallery.objects.get(pk=gallery_pk, family=family)
         medias = gallery.media_set.all().order_by('-upload_date')
 
-        paginator = Paginator(medias, 10)
+        paginator = Paginator(medias, 9)
         page_number = request.GET.get('page')
         page_obj = paginator.get_page(page_number)
 

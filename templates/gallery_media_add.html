@@ -2,10 +2,13 @@
 
 {% block family_content %}
 
-    <form method="post" enctype="multipart/form-data">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <input type="submit" value="Add">
-    </form>
+    <div class="container bg-white p-3 vertical-center">
+        <h1>Upload a new image</h1>
+        <form class="vertical-center" method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <input class="btn" type="submit" value="Upload">
+        </form>
+    </div>
 
 {% endblock %}
