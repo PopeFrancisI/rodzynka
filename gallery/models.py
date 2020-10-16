@@ -28,7 +28,7 @@ class Media(models.Model):
         return super().delete(keep_parents=False)
 
     def __str__(self):
-        return f'{self.title} (upload_date: {self.upload_date})'
+        return f'{self.title} (upload_date: {self.upload_date.strftime("%Y-%m-%d %H:%M:%S")})'
 
 
 def create_gallery(name, family, is_main, creator=None):

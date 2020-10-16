@@ -1,79 +1,102 @@
 {% extends 'family_base.html' %}
 
 {% block family_content %}
-    <h3>Your calendars</h3>
-        {% for calendar in user_calendars %}
-            <a href="{% url 'calendar_detail' family_slug=family.slug calendar_pk=calendar.id%}">{{ calendar.name }}</a>
-        {% endfor %}
-        <a href="{% url 'calendar_create' family_slug=family.slug %}">+ Add calendar</a>
 
-    <h2>{{ current_calendar.name }}</h2>
-    <p>
-        Members:
-        {% for user in current_calendar.users.all %}
-            {{ user.username }} ({{ user.first_name }} {{ user.last_name }})
-        {% endfor %}
-    </p>
+    <div class="container bg-yellow p-3">
 
-    {% if not current_calendar.is_main %}
-        <p><a href="{% url 'calendar_set_users' family_slug=family.slug calendar_pk=current_calendar.id %}">Add/remove members</a></p>
-    {% endif%}
-
-    <form action="{% url 'calendar_detail' family_slug=family.slug calendar_pk=current_calendar.id %}" method="post">
-        {% csrf_token %}
-        <label for="year">Year:</label>
-        <input type="text" name="year" id="year" value="{% now "Y" %}">
-
-        <label for="month">Month:</label>
-        <select name="month" id="month">
-            {% for month_number, month_name in months_all.items %}
-                <option value="{{ month_number }}"
-                        {% if month_number == month %}
-                            selected
-                        {% endif %}
-                >{{ month_name }}</option>
+        <div class="container bg-white mb-3 py-3">
+            <h4>Your calendars <a class="btn btn-small" href="{% url 'calendar_create' family_slug=family.slug %}">+ New calendar</a></h4>
+            {% for calendar in user_calendars %}
+                <a class="family-member" href="{% url 'calendar_detail' family_slug=family.slug calendar_pk=calendar.id%}">{{ calendar.name }}</a>
             {% endfor %}
-        </select>
-        <input type="submit" value="Go to selected date">
-    </form>
 
+        </div>
 
-    <ul>
-        {% for day in day_data %}
-            <li {% if day.day_number|divisibleby:2 %} style="background: papayawhip" {% endif %} >
-                <b>{{ day.day_number }} - {{ day.day_of_week }}</b>
-                <a href="{% url 'event_create' family_slug=family.slug calendar_pk=current_calendar.id year=year month=month day=day.day_number %}">+ New event</a>
-                <br>
-                {% for event in day.events %}
-                    <p>
-                        &gt;
-                        {% if event.is_important %}
-                            !!!
-                        {% endif %}
-
-                        {% if event.is_all_day %}
-                            all day
-                        {% else %}
-                            {{ event.date|date:"H:i" }}
-                        {% endif %}
-
-                        - {{ event.title }}
-                        {% if event.creator == request.user %}
-                            <a href="{% url 'event_update' family_slug=family.slug calendar_pk=current_calendar.pk event_pk=event.id year=year month=month %}">* change</a>
-                            <a href="{% url 'event_delete' family_slug=family.slug calendar_pk=current_calendar.pk event_pk=event.id year=year month=month %}">- delete</a>
-                        {% endif %}
-                        {% if event.description %}
-                            <br>
-                            <div style="font-style: italic">&nbsp; description: {{ event.description }}</div>
-                        {% endif %}
-                        <p>&nbsp; added by: {{ event.creator.username }}</p>
-                    </p>
-                {% empty %}
+        <div class="container bg-white py-3">
+            <h1>
+                {{ current_calendar.name }}
+                {% if not current_calendar.is_main %}
+                    <a class="btn btn-small" href="{% url 'calendar_set_users' family_slug=family.slug calendar_pk=current_calendar.id %}">Add/remove members</a>
+                {% endif%}
+            </h1>
+            <h5>Members:</h5>
+            <div class="d-flex flex-wrap">
+                {% for user in current_calendar.users.all %}
+                    <div class="family-member">
+                        {{ user.username }} ({{ user.first_name }} {{ user.last_name }})
+                    </div>
                 {% endfor %}
+            </div>
 
-            </li>
-        {% endfor %}
-    </ul>
+
+        </div>
+
+        <div class="container bg-white my-3 py-3">
+
+            <form action="{% url 'calendar_detail' family_slug=family.slug calendar_pk=current_calendar.id %}" method="post">
+                {% csrf_token %}
+                <label for="year">Year:</label>
+                <input type="text" name="year" id="year" value="{% now "Y" %}">
+
+                <label for="month">Month:</label>
+                <select name="month" id="month">
+                    {% for month_number, month_name in months_all.items %}
+                        <option value="{{ month_number }}"
+                                {% if month_number == month %}
+                                    selected
+                                {% endif %}
+                        >{{ month_name }}</option>
+                    {% endfor %}
+                </select>
+                <input type="submit" value="Go to selected date">
+            </form>
+
+            <hr>
+
+            {% for day in day_data %}
+                <div class="container p-3" {% if day.day_number|divisibleby:2 %} style="background: papayawhip" {% else %} style="background: #ffe8b7" {% endif %} >
+                    <div class="d-flex align-items-baseline justify-content-between mb-3">
+                        <h4>{{ day.day_number }} - {{ day.day_of_week }}</h4>
+                        <a class="btn btn-small" href="{% url 'event_create' family_slug=family.slug calendar_pk=current_calendar.id year=year month=month day=day.day_number %}">+ New event</a>
+                    </div>
+                    {% for event in day.events %}
+                        <div class="container bg-white py-2 mb-2">
+                            <div class="d-flex align-items-baseline justify-content-between">
+                                <div class="{% if event.is_important %} alert-danger {% endif %}">
+                                    {% if event.is_important %}
+                                        !!!
+                                    {% endif %}
+
+                                    {% if event.is_all_day %}
+                                        all day
+                                    {% else %}
+                                        {{ event.date|date:"H:i" }}
+                                    {% endif %}
+                                    / {{ event.creator.username }} - <b>{{ event.title }}</b>
+                                </div>
+
+                                <div class="">
+                                    {% if event.creator == request.user %}
+                                        <a class="btn btn-x-small" href="{% url 'event_update' family_slug=family.slug calendar_pk=current_calendar.pk event_pk=event.id year=year month=month %}">*</a>
+                                        <a class="btn btn-delete btn-x-small" href="{% url 'event_delete' family_slug=family.slug calendar_pk=current_calendar.pk event_pk=event.id year=year month=month %}">-</a>
+                                    {% endif %}
+                                </div>
+                            </div>
+
+                            {% if event.description %}
+                                <br>
+                                <div style="font-style: italic">{{ event.description }}</div>
+                            {% endif %}
+
+                        </div>
+                    {% empty %}
+                    {% endfor %}
+                </div>
+            {% endfor %}
+        </div>
+
+    </div>
+
 
 
 {% endblock %}
