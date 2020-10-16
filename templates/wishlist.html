@@ -2,33 +2,43 @@
 
 {% block family_content %}
 
-    <h2>{{ family.name }} family wishlist</h2>
-    <hr>
+    <div class="container bg-yellow p-3">
+        <div class="bg-white p-3 mb-3">
+            <h1>{{ family.name }} family wishlist <a class="btn btn-small" href="{% url 'wish_create' family_slug=family.slug %}">+ New wish</a></h1>
+        </div>
 
-    <a href="{% url 'wish_create' family_slug=family.slug %}">+ New wish</a>
-    <hr>
+        {% if not wishlist %}
+            <div class="bg-white p-3 mb-3">
+                <h2>There are no wishes on the wishlist yet!</h2>
+            </div>
+        {% else %}
+            {% for user, user_wishes in wishlist %}
+                <div class="bg-white p-3 mb-3">
+                    <h2>{{ user }}'s wishes:</h2>
+                    <ul>
+                        {% for wish in user_wishes %}
+                            <li>
+                                <h3>
+                                    {% if wish.is_important %}
+                                        !!! {{ wish.title }}
+                                    {% else %}
+                                        {{ wish.title }}
+                                    {% endif %}
+                                    {% if current_user == user %}
+                                        <a class="btn btn-x-small" href="{% url 'wish_update' family_slug=family.slug wish_pk=wish.id %}">*</a>
+                                        <a class="btn btn-delete btn-x-small" href="{% url 'wish_delete' family_slug=family.slug wish_pk=wish.id %}">-</a>
+                                    {% endif %}
+                                </h3>
+                                <p>{{ wish.description }}</p>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            {% endfor %}
+        {% endif %}
 
-    {% if not wishlist %}
-        <b>There are no wishes on the wishlist yet!</b>
-    {% else %}
-        {% for user, user_wishes in wishlist %}
-            <h3>{{ user }}'s wishes:</h3>
-            <ul>
-                {% for wish in user_wishes %}
-                    <li>
-                        {% if wish.is_important %}
-                            <b>!!!</b>
-                        {% endif %}
-                        <b>{{ wish.title }}</b>
-                        {% if current_user == user %}
-                            <a href="{% url 'wish_update' family_slug=family.slug wish_pk=wish.id %}">* Update this wish</a>
-                            <a href="{% url 'wish_delete' family_slug=family.slug wish_pk=wish.id %}">- Remove this wish</a>
-                        {% endif %}
-                        <p>{{ wish.description }}</p>
-                    </li>
-                {% endfor %}
-            </ul>
-        {% endfor %}
-    {% endif %}
+    </div>
+
+
 
 {% endblock %}
