@@ -20,7 +20,12 @@ BASE_DIR = Path(__file__).resolve(strict=True).parent.parent
 # See https://docs.djangoproject.com/en/3.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = '1tw8d2wp(3%ds%@trcq-v49&7v=#5ho6v8y3a462$2tz!dkvc)'
+try:
+    from Rodzynka.local_settings import SECRET_KEY
+except ModuleNotFoundError:
+    print("No secret key found in local_settings.py!")
+    print("Generate a secret key and try again.")
+    exit(0)
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
