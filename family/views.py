@@ -1,3 +1,5 @@
+from datetime import datetime
+
 from django.contrib.auth.models import User
 from django.shortcuts import render, redirect
 from django.urls import reverse, reverse_lazy
@@ -5,7 +7,7 @@ from django.views import View
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic import FormView
 
-from calendars.models import create_calendar
+from calendars.models import create_calendar, Calendar, Event
 from family.forms import FamilyCreateForm, FamilyInviteForm, FamilyRequestJoinForm
 from family.models import Family
 from family.utils import slugify
@@ -50,6 +52,19 @@ def get_newest_wishes(family, n=5):
     return newest_wishes
 
 
+def get_incoming_events(family, n=5):
+    try:
+        family_main_calendar = Calendar.objects.get(family=family, is_main=True)
+        incoming_events = Event.objects.filter(
+            calendar=family_main_calendar,
+            date__gte=datetime.now()
+        ).order_by('-date')[:n]
+    except Exception:
+        incoming_events = None
+
+    return incoming_events
+
+
 class FamilyMainView(LoginRequiredMixin, GetUserFamilyMixin, View):
 
     def get(self, request, family_slug):
@@ -61,12 +76,15 @@ class FamilyMainView(LoginRequiredMixin, GetUserFamilyMixin, View):
 
         newest_wishes = get_newest_wishes(family)
 
+        incoming_events = get_incoming_events(family)
+
         users_requesting_join = family.requesting_users.all()
 
         context = {'user_family': family,
                    'newest_media': newest_media,
                    'newest_media_gallery': newest_media_gallery,
                    'newest_wishes': newest_wishes,
+                   'incoming_events': incoming_events,
                    'requesting_users': users_requesting_join}
         request.session['current_family_slug'] = family.slug
 

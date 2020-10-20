@@ -34,6 +34,23 @@
                 <div class="col container bg-white py-3 m-3">
                     <div>
                         <h3><a href="{% url 'calendar_detail' family_slug=user_family.slug %}">Calendar</a>: incoming events</h3>
+                        {% for event in incoming_events %}
+                            <ul>
+                                <li>
+                                    {% if event.is_all_day %}
+                                        {{ event.date|date:"Y-m-d (D)" }} All day
+                                    {% else %}
+                                        {{ event.date|date:"Y-m-d (D) H:i" }}
+                                    {% endif %}
+                                    <br>
+                                    <b>{{ event.title }}</b>
+                                    <br>
+                                    by: {{ event.creator.username }} ({{ event.creator.first_name }} {{ event.creator.last_name }})
+                                </li>
+                            </ul>
+                        {% empty %}
+                            <b>There are no incoming events on the family calendar.</b>
+                        {% endfor %}
                     </div>
                 </div>
 
