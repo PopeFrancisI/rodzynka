@@ -2,11 +2,14 @@
 
 {% block family_content %}
 
-    <h2>Are you sure you want to delete "{{ event.title }}" event</h2>
+    <div class="container bg-white p-3 vertical-center">
+        <h1>Are you sure you want to delete "{{ event.title }}" event?</h1>
 
-    <form method="post">
-        {% csrf_token %}
-        <input type="submit" value="Confirm">
-    </form>
+        <form method="post">
+            {% csrf_token %}
+            <input class="btn btn-delete" type="submit" value="Delete">
+            <a class="btn" href="{% url 'calendar_detail' family_slug=current_family.slug %}">No, take me back to the Calendar</a>
+        </form>
+    </div>
 
 {% endblock %}

@@ -274,10 +274,30 @@ class EventUpdateView(LoginRequiredMixin, UpdateView):
 
     def form_valid(self, form):
         event = self.get_object()
-        if event.creator is not self.request.user:
+        if event.creator != self.request.user:
             return redirect(self.get_success_url())
-        else:
-            return super().form_valid(form)
+
+        event = form.save(commit=False)
+
+        time = self.request.POST.get('time')
+        if time:
+            split_time = time.split(':')
+            hour = int(split_time[0])
+            minute = int(split_time[1])
+
+            old_date = event.date
+            new_date = datetime(
+                year=old_date.year,
+                month=old_date.month,
+                day=old_date.day,
+                hour=hour,
+                minute=minute
+            )
+            event.date = new_date
+
+        event.save()
+
+        return redirect(self.get_success_url())
 
 
 class EventDeleteView(LoginRequiredMixin, DeleteView):

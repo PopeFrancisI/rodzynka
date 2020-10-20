@@ -2,14 +2,18 @@
 
 {% block family_content %}
 
-    <h2>Add event</h2>
+    <div class="container bg-white p-3 vertical-center">
+        <h1>Add an event</h1>
 
-    <form method="post">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <label for="time">Time:</label>
-        <input type="time" id="time" name="time">
-        <p><input type="submit" value="Add event"></p>
-    </form>
+        <form class="vertical-center" method="post">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <label for="time">Time:</label>
+            <input type="time" id="time" name="time">
+            <input class="btn mt-3" type="submit" value="Add event">
+        </form>
+    </div>
+
+
 
 {% endblock %}
