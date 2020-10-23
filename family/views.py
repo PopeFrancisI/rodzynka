@@ -1,5 +1,3 @@
-from datetime import datetime
-
 from django.contrib.auth.models import User
 from django.shortcuts import render, redirect
 from django.urls import reverse, reverse_lazy
@@ -7,11 +5,12 @@ from django.views import View
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic import FormView
 
-from calendars.models import create_calendar, Calendar, Event
+from calendars.models import create_calendar, get_incoming_events
 from family.forms import FamilyCreateForm, FamilyInviteForm, FamilyRequestJoinForm
 from family.models import Family
 from family.utils import slugify
-from gallery.models import create_gallery
+from gallery.models import create_gallery, get_newest_media
+from wishlist.models import get_newest_wishes
 
 
 class GetUserFamilyMixin:
@@ -19,50 +18,6 @@ class GetUserFamilyMixin:
         families = user.family_set.all()
         family = families.get(slug=slug)
         return family
-
-
-def get_newest_media(family):
-    """
-    returns a tuple where first value is the newest media/image from family gallery,
-    and the second value is the gallery containing that media/image.
-    :param family:
-    :return:
-    """
-    last_updated_gallery = family.gallery_set.all().order_by('last_media_upload_date').first()
-    try:
-        newest_media = last_updated_gallery.media_set.latest('upload_date')
-    except Exception:
-        newest_media = None
-    return newest_media, last_updated_gallery
-
-
-def get_newest_wishes(family, n=5):
-    """
-    returns n newest family wishes
-    :param family:
-    :param n: number of wishes to be returned
-    :return:
-    """
-    family: Family
-    try:
-        newest_wishes = family.wish_set.order_by('-create_date')[:n]
-    except Exception:
-        newest_wishes = None
-
-    return newest_wishes
-
-
-def get_incoming_events(family, n=5):
-    try:
-        family_main_calendar = Calendar.objects.get(family=family, is_main=True)
-        incoming_events = Event.objects.filter(
-            calendar=family_main_calendar,
-            date__gte=datetime.now()
-        ).order_by('-date')[:n]
-    except Exception:
-        incoming_events = None
-
-    return incoming_events
 
 
 class FamilyMainView(LoginRequiredMixin, GetUserFamilyMixin, View):

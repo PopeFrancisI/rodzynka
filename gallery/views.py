@@ -1,7 +1,7 @@
+from copy import copy, deepcopy
+
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.paginator import Paginator
-from django.db.models import QuerySet
-from django.forms import Form
 from django.shortcuts import render, redirect
 from django.urls import reverse_lazy, reverse
 from django.views import View
@@ -9,7 +9,7 @@ from django.views.generic import FormView, DeleteView, CreateView
 
 from family.models import Family
 from gallery.forms import GalleryMediaCreateForm
-from gallery.models import Gallery, Media, create_gallery
+from gallery.models import Gallery, Media, create_gallery, get_newest_media_in_gallery
 from family.views import GetUserFamilyMixin
 
 
@@ -166,5 +166,23 @@ class GalleryMediaDeleteView(LoginRequiredMixin, DeleteView):
         if media.uploader != request.user:
             return redirect(self.get_success_url())
 
-        return super().delete(request, *args, **kwargs)
+        try:
+            galleries = media.galleries.all()
 
+            galleries = copy(galleries)
+
+            media.delete()
+            print(galleries)
+
+            for gallery in galleries:
+                newest_media = get_newest_media_in_gallery(gallery)
+                if newest_media:
+                    gallery.last_media_upload_date = newest_media.upload_date
+                else:
+                    gallery.last_media_upload_date = None
+                gallery.save()
+
+        except Exception as e:
+            print(e)
+
+        return redirect(self.get_success_url())

@@ -81,8 +81,8 @@
                     </a>
                 {% else %}
                     <b>There are no images in the family gallery yet!</b>
-                    <a href="{% url 'gallery_detail' family_slug=user_family.slug gallery_pk=newest_media_gallery.id %}">
-                        You can add pictures here...
+                    <a href="{% url 'gallery_pick' family_slug=user_family.slug %}">
+                        You can add images here...
                     </a>
                 {% endif %}
             </div>

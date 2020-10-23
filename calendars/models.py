@@ -1,5 +1,6 @@
 from django.contrib.auth.models import User
 from django.db import models
+from django.utils.datetime_safe import datetime
 
 from family.models import Family
 
@@ -36,3 +37,16 @@ class Event(models.Model):
     is_important = models.BooleanField(default=False, verbose_name='Important')
     creator = models.ForeignKey(User, on_delete=models.CASCADE)
     calendar = models.ForeignKey(Calendar, on_delete=models.CASCADE)
+
+
+def get_incoming_events(family, n=5):
+    try:
+        family_main_calendar = Calendar.objects.get(family=family, is_main=True)
+        incoming_events = Event.objects.filter(
+            calendar=family_main_calendar,
+            date__gte=datetime.now()
+        ).order_by('-date')[:n]
+    except Exception:
+        incoming_events = None
+
+    return incoming_events

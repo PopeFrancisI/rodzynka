@@ -14,3 +14,19 @@ class Wish(models.Model):
 
     def __str__(self):
         return self.title
+
+
+def get_newest_wishes(family, n=5):
+    """
+    returns n newest family wishes
+    :param family:
+    :param n: number of wishes to be returned
+    :return:
+    """
+    family: Family
+    try:
+        newest_wishes = family.wish_set.order_by('-create_date')[:n]
+    except Exception:
+        newest_wishes = None
+
+    return newest_wishes
