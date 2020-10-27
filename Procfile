@@ -1,0 +1,1 @@
+web: gunicorn Rodzynka.wsgi --log-file -
