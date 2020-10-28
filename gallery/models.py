@@ -19,7 +19,7 @@ class Media(models.Model):
     title = models.CharField(max_length=64)
     upload_date = models.DateTimeField(auto_now_add=True)
     uploader = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
-    image = models.ImageField(upload_to='user_images/')
+    image = models.ImageField(upload_to='user_images')
     galleries = models.ManyToManyField(Gallery)
 
     def delete(self, using=None, keep_parents=False):
