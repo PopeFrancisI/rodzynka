@@ -80,7 +80,7 @@ urlpatterns = [
     re_path(r'^family/(?P<family_slug>[a-z\d-]+)/calendar/(?P<calendar_pk>[\d]+)/event/update/(?P<event_pk>[\d]+)/(?P<year>[\d]{4})/(?P<month>[\d]+)/',
             EventUpdateView.as_view(), name='event_update'),
 ]
-
-if settings.DEBUG:
-    urlpatterns += static(settings.MEDIA_URL,
-                          document_root=settings.MEDIA_ROOT)
+#
+# if settings.DEBUG:
+#     urlpatterns += static(settings.MEDIA_URL,
+#                           document_root=settings.MEDIA_ROOT)
